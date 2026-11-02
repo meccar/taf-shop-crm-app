@@ -11,6 +11,7 @@ import {
   Download,
   Edit,
   ExternalLink,
+  FileText,
   LayoutGrid,
   List,
   MapPin,
@@ -95,6 +96,11 @@ import { PaginationBar } from "@/components/shared/pagination-bar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { StoreFormDialog } from "@/features/stores/components/store-form-dialog";
+import { PageHeader } from "@/components/shared/page-header";
+import {
+  QuickAction,
+  QuickActionsMenu,
+} from "@/components/shared/quick-actions-menu";
 
 export function StoresManagementView() {
   const router = useRouter();
@@ -205,6 +211,29 @@ export function StoresManagementView() {
     toast.success(`Exported ${stores.length} store records to CSV`);
   };
 
+  const createActions: QuickAction[] = [
+    {
+      label: "Export",
+      icon: Download,
+      onSelect: () => {
+        handleExportCsv();
+      },
+    },
+    {
+      label: "Create Store (Quick Modal)",
+      icon: Plus,
+      onSelect: () => {
+        setEditingStore(null);
+        setFormDialogOpen(true);
+      },
+    },
+    {
+      label: "Create Store (Full Page)",
+      icon: FileText,
+      href: "/stores/new",
+    },
+  ];
+
   const handleToggleStoreStatus = (store: Store) => {
     const nextStatus: StoreStatus =
       store.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
@@ -262,53 +291,11 @@ export function StoresManagementView() {
   return (
     <div className="flex flex-col gap-6">
       {/* Page Header matching Stitch Screen 1 */}
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-        <div className="max-w-2xl">
-          <div className="mb-1.5 flex items-center gap-2 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-primary">
-              Tenant Instance #RET-994
-            </span>
-            <span aria-hidden="true" className="text-slate-300">
-              ·
-            </span>
-            <span className="text-muted-foreground tabular-nums">
-              {summary?.totalStores ?? 4} Locations Provisioned
-            </span>
-          </div>
-          <h1 className="text-[28px] font-bold tracking-tight text-foreground leading-tight">
-            Stores Management
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Manage physical retail locations, store codes, active POS
-            integrations, and store-level catalog assignments.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <Button type="button" variant="outline" onClick={handleExportCsv}>
-            <Download className="h-4 w-4" />
-            Export Matrix
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push("/stores/new")}
-          >
-            Full Page Form
-          </Button>
-          <Button
-            type="button"
-            variant="default"
-            onClick={() => {
-              setEditingStore(null);
-              setFormDialogOpen(true);
-            }}
-          >
-            <Plus className="h-4 w-4" />
-            Create Store
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title="Stores Management"
+        description="Manage physical retail locations, store codes, active POS integrations, and store-level catalog assignments."
+        actions={<QuickActionsMenu actions={createActions} />}
+      />
 
       {/* 4-Card KPI Strip matching Stitch Screen 1 */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

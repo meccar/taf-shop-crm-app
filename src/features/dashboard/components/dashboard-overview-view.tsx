@@ -2,17 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   AlertTriangle,
   ArrowRight,
-  CalendarDays,
-  ChevronDown,
   Clock,
   FolderTree,
   Package,
   Plus,
-  PlusCircle,
   Store as StoreIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -35,23 +31,23 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ProductThumbnail } from "@/components/shared/product-thumbnail";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
-import { DATE_RANGE_OPTIONS } from "@/lib/constants/dates";
+import { PageHeader } from "@/components/shared/page-header";
+import { DateRangeSelect } from "@/components/shared/date-range-select";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  QuickAction,
+  QuickActionsMenu,
+} from "@/components/shared/quick-actions-menu";
 
 export function DashboardOverviewView() {
-  const router = useRouter();
-  const { activeStoreId, stores, setActiveStoreId } = useActiveStore();
+  const { activeStoreId } = useActiveStore();
   const [dateRange, setDateRange] = React.useState("30d");
-  const [quickActionsOpen, setQuickActionsOpen] = React.useState(false);
 
-  const goTo = (href: string) => {
-    setQuickActionsOpen(false);
-    router.push(href);
-  };
+  const createActions: QuickAction[] = [
+    { label: "New Store", icon: StoreIcon, href: "/stores/new" },
+    { label: "New Category", icon: FolderTree, href: "/categories/new" },
+    { label: "Add Product", icon: Plus, href: "/products/new" },
+  ];
+
   const {
     data: summary,
     isLoading,
@@ -98,116 +94,16 @@ export function DashboardOverviewView() {
   return (
     <div className="flex flex-col gap-6">
       {/* Page Header & Store Context Selector */}
-      <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-        <div className="space-y-1">
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span className="font-semibold text-primary">
-              Tenant Instance #RET-994
-            </span>
-            <span aria-hidden="true">·</span>
-            <span>
-              Active Context:{" "}
-              <strong className="font-semibold text-foreground">
-                {summary?.activeStore.name ?? "Loading..."}
-              </strong>{" "}
-              ({summary?.activeStore.code ?? "..."})
-            </span>
-          </div>
-          <h1 className="text-[28px] font-bold tracking-tight text-foreground leading-tight">
-            Welcome back, Sarah
-          </h1>
-          <p className="text-sm text-muted-foreground max-w-2xl">
-            Monitor store-scoped catalog coverage, inventory thresholds, and
-            multi-location POS readiness.
-          </p>
-        </div>
-
-        {/* Store Selector + Quick Actions */}
-        <div className="flex w-full flex-row flex-wrap items-center gap-2.5 lg:w-auto lg:justify-end">
-          <div className="w-40 shrink-0">
-            {/* Date Range */}
-            <Popover>
-              <PopoverTrigger
-                render={
-                  <Button type="button" variant="outline" className="shrink-0">
-                    <CalendarDays className="h-4 w-4" />
-                    {DATE_RANGE_OPTIONS.find(
-                      (option) => option.value === dateRange,
-                    )?.label ?? "Last 30 days"}
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                }
-              />
-
-              <PopoverContent align="start" className="w-48 p-2">
-                <div className="space-y-1">
-                  <p className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                    Select date range
-                  </p>
-
-                  {DATE_RANGE_OPTIONS.map((option) => (
-                    <Button
-                      key={option.value}
-                      type="button"
-                      variant={
-                        dateRange === option.value ? "secondary" : "ghost"
-                      }
-                      size="sm"
-                      className="w-full justify-start"
-                      onClick={() => setDateRange(option.value)}
-                    >
-                      {option.label}
-                    </Button>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-
-          {/* Quick Actions */}
-          <Popover open={quickActionsOpen} onOpenChange={setQuickActionsOpen}>
-            <PopoverTrigger render={<Button type="button" variant="default" />}>
-              <PlusCircle className="h-4 w-4" />
-              Quick Actions
-              <ChevronDown className="h-4 w-4" />
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-64 p-3">
-              <div className="flex flex-col gap-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="justify-start"
-                  onClick={() => goTo("/stores/new")}
-                >
-                  <StoreIcon className="h-4 w-4" />
-                  New Store
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="justify-start"
-                  onClick={() => goTo("/categories/new")}
-                >
-                  <FolderTree className="h-4 w-4" />
-                  New Category
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="justify-start"
-                  onClick={() => goTo("/products/new")}
-                >
-                  <Plus className="h-4 w-4" />
-                  Add Product
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
-        </div>
-      </div>
+      <PageHeader
+        title="Welcome back, Sarah"
+        description="Monitor store-scoped catalog coverage, inventory thresholds, and multi-location POS readiness."
+        actions={
+          <>
+            <DateRangeSelect value={dateRange} onValueChange={setDateRange} />
+            <QuickActionsMenu actions={createActions} />
+          </>
+        }
+      />
 
       {/* 4-Column Summary KPI Strip (Strictly Store, Product, Category & Low-Stock Metrics) */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">

@@ -29,6 +29,18 @@ interface StoreFormProps {
   onCancel?: () => void;
 }
 
+const FORMAT_OPTIONS = [
+  { value: "FLAGSHIP", label: "Flagship Center" },
+  { value: "MALL", label: "Mall Boutique" },
+  { value: "OUTLET", label: "Outlet Clearance" },
+  { value: "POPUP", label: "Pop-up Kiosk" },
+];
+
+const STATUS_OPTIONS = [
+  { value: "ACTIVE", label: "Active POS" },
+  { value: "INACTIVE", label: "Inactive (Setup Phase)" },
+];
+
 export function StoreForm({
   initialData,
   suggestedCode = "#STR-05",
@@ -92,19 +104,27 @@ export function StoreForm({
       <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label>Store Format *</Label>
+          {/* Store Format */}
           <Controller
             control={control}
             name="format"
             render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
+              <Select
+                value={field.value}
+                items={FORMAT_OPTIONS}
+                onValueChange={(value) => {
+                  if (value !== null) field.onChange(value);
+                }}
+              >
+                <SelectTrigger id="store-format" className="w-full">
                   <SelectValue placeholder="Select store format" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="FLAGSHIP">Flagship Center</SelectItem>
-                  <SelectItem value="MALL">Mall Boutique</SelectItem>
-                  <SelectItem value="OUTLET">Outlet Clearance</SelectItem>
-                  <SelectItem value="POPUP">Pop-up Kiosk</SelectItem>
+                  {FORMAT_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {o.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
@@ -116,19 +136,27 @@ export function StoreForm({
 
         <div className="space-y-1.5">
           <Label>Operational Status *</Label>
+          {/* Operational Status */}
           <Controller
             control={control}
             name="status"
             render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
+              <Select
+                value={field.value}
+                items={STATUS_OPTIONS}
+                onValueChange={(value) => {
+                  if (value !== null) field.onChange(value);
+                }}
+              >
+                <SelectTrigger id="store-status" className="w-full">
                   <SelectValue placeholder="Select operational status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ACTIVE">Active POS</SelectItem>
-                  <SelectItem value="INACTIVE">
-                    Inactive (Setup Phase)
-                  </SelectItem>
+                  {STATUS_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {o.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
@@ -169,7 +197,7 @@ export function StoreForm({
 
       <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
         <div className="space-y-1.5">
-          <Label htmlFor="store-phone">Contact Phone</Label>
+          <Label htmlFor="store-phone">Phone</Label>
           <Input
             id="store-phone"
             type="tel"
@@ -182,7 +210,7 @@ export function StoreForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="store-email">Store Contact Email</Label>
+          <Label htmlFor="store-email">Email</Label>
           <Input
             id="store-email"
             type="email"
@@ -195,7 +223,7 @@ export function StoreForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="store-tax">Default Tax Rate (%)</Label>
+          <Label htmlFor="store-tax">Tax Rate (%)</Label>
           <Input
             id="store-tax"
             type="number"

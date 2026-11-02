@@ -13,6 +13,7 @@ import {
   Edit,
   Eye,
   EyeOff,
+  FileText,
   FolderTree,
   GitBranch,
   History,
@@ -79,6 +80,11 @@ import { PaginationBar } from "@/components/shared/pagination-bar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { CategoryFormDialog } from "@/features/categories/components/category-form-dialog";
+import { PageHeader } from "@/components/shared/page-header";
+import {
+  QuickAction,
+  QuickActionsMenu,
+} from "@/components/shared/quick-actions-menu";
 
 export function CategoriesManagementView() {
   const router = useRouter();
@@ -119,6 +125,29 @@ export function CategoriesManagementView() {
     },
     [pathname, router, searchParams],
   );
+
+  const createActions: QuickAction[] = [
+    {
+      label: "Reorder POS",
+      icon: ArrowUpDown,
+      onSelect: () => {
+        openReorderModal();
+      },
+    },
+    {
+      label: "Add Category (Quick Modal)",
+      icon: Plus,
+      onSelect: () => {
+        setEditingCategory(null);
+        setFormDialogOpen(true);
+      },
+    },
+    {
+      label: "Add Category (Full Page)",
+      icon: FileText,
+      href: "/categories/new",
+    },
+  ];
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -233,48 +262,13 @@ export function CategoriesManagementView() {
   return (
     <div className="flex flex-col gap-6">
       {/* Sticky Context Header matching Stitch Screen 2 */}
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <div className="mb-1 flex items-center gap-2.5">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              Categories
-            </h1>
-            <StatusBadge variant="navy" className="tabular-nums">
-              {counts?.activeCategories ?? 0} Active
-            </StatusBadge>
-          </div>
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            Organize and structure your retail catalog across all stores.
+      <PageHeader
+        title="Categories Management"
+        description="Organize and structure your retail catalog across all stores.
             Categories determine storefront navigation, POS quick-keys, and
-            inventory reporting.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <Button type="button" variant="outline" onClick={openReorderModal}>
-            <ArrowUpDown className="h-4 w-4" />
-            Reorder POS
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push("/categories/new")}
-          >
-            Full Page Form
-          </Button>
-          <Button
-            type="button"
-            variant="default"
-            onClick={() => {
-              setEditingCategory(null);
-              setFormDialogOpen(true);
-            }}
-          >
-            <Plus className="h-4 w-4" />
-            Create Category
-          </Button>
-        </div>
-      </div>
+            inventory reporting."
+        actions={<QuickActionsMenu actions={createActions} />}
+      />
 
       {/* Metric Strip & High Density Filter Bar matching Stitch Screen 2 */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">

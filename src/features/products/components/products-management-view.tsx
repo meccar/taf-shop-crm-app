@@ -17,6 +17,7 @@ import {
   Download,
   Edit,
   Eye,
+  FileText,
   MoreVertical,
   Package,
   Plus,
@@ -87,13 +88,17 @@ import { PaginationBar } from "@/components/shared/pagination-bar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ErrorState } from "@/components/shared/error-state";
 import { ProductFormDialog } from "@/features/products/components/product-form-dialog";
+import {
+  QuickAction,
+  QuickActionsMenu,
+} from "@/components/shared/quick-actions-menu";
+import { PageHeader } from "@/components/shared/page-header";
 
 export function ProductsManagementView() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { activeStoreId, activeStore, stores, setActiveStoreId } =
-    useActiveStore();
+  const { activeStoreId, activeStore } = useActiveStore();
 
   // Sync filters & sorting with URL searchParams
   const searchParam = searchParams.get("search") ?? "";
@@ -160,6 +165,29 @@ export function ProductsManagementView() {
     page: pageParam,
     pageSize: pageSizeParam,
   });
+
+  const createActions: QuickAction[] = [
+    {
+      label: "Export",
+      icon: Download,
+      onSelect: () => {
+        handleExportCatalog();
+      },
+    },
+    {
+      label: "Add Product (Quick Modal)",
+      icon: Plus,
+      onSelect: () => {
+        setEditingProduct(null);
+        setFormDialogOpen(true);
+      },
+    },
+    {
+      label: "Add Product (Full Page)",
+      icon: FileText,
+      href: "/products/new",
+    },
+  ];
 
   const { data: categoriesResponse } = useCategories({
     storeId: activeStoreId,
@@ -498,79 +526,11 @@ export function ProductsManagementView() {
   return (
     <div className="flex flex-col gap-6">
       {/* Context Header */}
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-        <div>
-          <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
-            <StoreIcon className="h-3.5 w-3.5 text-primary" />
-            <span>
-              Store-Scoped Catalog:{" "}
-              <strong className="font-semibold text-foreground">
-                {activeStore?.name ?? "Loading..."}
-              </strong>{" "}
-              ({activeStore?.code})
-            </span>
-          </div>
-          <h1 className="text-[28px] font-bold tracking-tight text-foreground leading-tight">
-            Products
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground max-w-2xl">
-            Manage SKUs, unit pricing, category mappings, and inventory alert
-            thresholds exclusively for{" "}
-            <span className="font-medium text-foreground">
-              {activeStore?.name ?? "the selected store"}
-            </span>
-            .
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-          <div className="w-52">
-            <Select
-              value={activeStoreId}
-              onValueChange={(value) => {
-                if (value === null) return;
-                setActiveStoreId(value);
-                updateUrlParams({ page: "1", categoryId: null });
-              }}
-            >
-              <SelectTrigger aria-label="Switch store catalog">
-                <SelectValue placeholder="Switch store" />
-              </SelectTrigger>
-              <SelectContent>
-                {stores.map((s) => (
-                  <SelectItem key={s.id} value={s.id}>
-                    {s.name} ({s.code})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Button type="button" variant="outline" onClick={handleExportCatalog}>
-            <Download className="h-4 w-4" />
-            Export CSV
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.push("/products/new")}
-          >
-            Full Page Form
-          </Button>
-          <Button
-            type="button"
-            variant="default"
-            disabled={!activeStore}
-            onClick={() => {
-              setEditingProduct(null);
-              setFormDialogOpen(true);
-            }}
-          >
-            <Plus className="h-4 w-4" />
-            Add Product
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title="Products Management"
+        description="Manage SKUs, unit pricing, category mappings, and inventory alert thresholds."
+        actions={<QuickActionsMenu actions={createActions} />}
+      />
 
       {/* Store Catalog KPI Summary */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

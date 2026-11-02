@@ -1,5 +1,7 @@
+import { QuickAction } from "@/components/shared/quick-actions-menu";
 import type { Product } from "@/features/products/types/product.types";
 import type { Store } from "@/features/stores/types/store.types";
+import { FolderTree, Plus, StoreIcon } from "lucide-react";
 
 export type ActivityEntityType = "STORE" | "PRODUCT" | "CATEGORY" | "SYSTEM";
 
