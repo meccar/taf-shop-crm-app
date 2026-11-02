@@ -1,0 +1,6 @@
+{
+  "name": "Shop CRM — Multi-Store Management SaaS",
+  "description": "Multi-store retail CRM and catalog management SaaS built with Next.js App Router, strict TypeScript, shadcn/ui, and TanStack Query.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
