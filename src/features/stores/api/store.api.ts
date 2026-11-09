@@ -5,10 +5,13 @@ import type {
   StoresListResponse,
 } from "@/features/stores/types/store.types";
 import type { StoreFormValues } from "@/features/stores/schemas/store.schema";
+import { ApiResponse } from "@/types/common.type";
 
 export const storeApi = {
-  getStores(filters: StoreFilters = {}): Promise<StoresListResponse> {
-    return apiRequest<StoresListResponse>("/stores", {
+  getStores(
+    filters: StoreFilters = {},
+  ): Promise<ApiResponse<StoresListResponse>> {
+    return apiRequest<ApiResponse<StoresListResponse>>("/stores", {
       method: "GET",
       params: {
         search: filters.search,
@@ -20,14 +23,17 @@ export const storeApi = {
     });
   },
 
-  getStoreById(storeId: string): Promise<Store> {
-    return apiRequest<Store>(`/stores/${encodeURIComponent(storeId)}`, {
-      method: "GET",
-    });
+  getStoreById(storeId: string): Promise<ApiResponse<Store>> {
+    return apiRequest<ApiResponse<Store>>(
+      `/stores/${encodeURIComponent(storeId)}`,
+      {
+        method: "GET",
+      },
+    );
   },
 
-  createStore(payload: StoreFormValues): Promise<Store> {
-    return apiRequest<Store, StoreFormValues>("/stores", {
+  createStore(payload: StoreFormValues): Promise<ApiResponse<Store>> {
+    return apiRequest<ApiResponse<Store>, StoreFormValues>("/stores", {
       method: "POST",
       body: payload,
     });
@@ -36,8 +42,8 @@ export const storeApi = {
   updateStore(
     storeId: string,
     payload: Partial<StoreFormValues>,
-  ): Promise<Store> {
-    return apiRequest<Store, Partial<StoreFormValues>>(
+  ): Promise<ApiResponse<Store>> {
+    return apiRequest<ApiResponse<Store>, Partial<StoreFormValues>>(
       `/stores/${encodeURIComponent(storeId)}`,
       {
         method: "PATCH",
@@ -46,8 +52,10 @@ export const storeApi = {
     );
   },
 
-  deleteStore(storeId: string): Promise<{ deleted: boolean; id: string }> {
-    return apiRequest<{ deleted: boolean; id: string }>(
+  deleteStore(
+    storeId: string,
+  ): Promise<ApiResponse<{ deleted: boolean; id: string }>> {
+    return apiRequest<ApiResponse<{ deleted: boolean; id: string }>>(
       `/stores/${encodeURIComponent(storeId)}`,
       {
         method: "DELETE",

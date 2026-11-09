@@ -1,25 +1,22 @@
 "use client";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Info, Loader2 } from "lucide-react";
+import { Info } from "lucide-react";
 import {
   storeFormSchema,
   type StoreFormValues,
 } from "@/features/stores/schemas/store.schema";
 import type { Store } from "@/features/stores/types/store.types";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+  FormActions,
+  FormField,
+  FormGrid,
+  FormLayout,
+  FormSelect,
+} from "@/components/shared/form-fields";
 interface StoreFormProps {
   initialData?: Store;
   suggestedCode?: string;
@@ -73,157 +70,121 @@ export function StoreForm({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
-        <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor="store-name">Store Name *</Label>
+    <FormLayout onSubmit={handleSubmit(onSubmit)}>
+      <FormGrid cols={3}>
+        <FormField
+          label="Store Name"
+          required
+          htmlFor="store-name"
+          error={errors.name}
+          className="@md:col-span-2"
+        >
           <Input
             id="store-name"
             placeholder="e.g. South Bay Showroom"
             {...register("name")}
           />
-          {errors.name && (
-            <p className="text-xs text-destructive">{errors.name.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="store-code">Code *</Label>
+        <FormField
+          label="Code"
+          required
+          htmlFor="store-code"
+          error={errors.code}
+        >
           <Input
             id="store-code"
             placeholder="#STR-05"
             className="font-mono uppercase"
             {...register("code")}
           />
-          {errors.code && (
-            <p className="text-xs text-destructive">{errors.code.message}</p>
-          )}
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>Store Format *</Label>
-          {/* Store Format */}
-          <Controller
+      <FormGrid>
+        <FormField
+          label="Store Format"
+          required
+          htmlFor="store-format"
+          error={errors.format}
+        >
+          <FormSelect
             control={control}
             name="format"
-            render={({ field }) => (
-              <Select
-                value={field.value}
-                items={FORMAT_OPTIONS}
-                onValueChange={(value) => {
-                  if (value !== null) field.onChange(value);
-                }}
-              >
-                <SelectTrigger id="store-format" className="w-full">
-                  <SelectValue placeholder="Select store format" />
-                </SelectTrigger>
-                <SelectContent>
-                  {FORMAT_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value}>
-                      {o.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+            id="store-format"
+            options={FORMAT_OPTIONS}
+            placeholder="Select store format"
           />
-          {errors.format && (
-            <p className="text-xs text-destructive">{errors.format.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label>Operational Status *</Label>
-          {/* Operational Status */}
-          <Controller
+        <FormField
+          label="Operational Status"
+          required
+          htmlFor="store-status"
+          error={errors.status}
+        >
+          <FormSelect
             control={control}
             name="status"
-            render={({ field }) => (
-              <Select
-                value={field.value}
-                items={STATUS_OPTIONS}
-                onValueChange={(value) => {
-                  if (value !== null) field.onChange(value);
-                }}
-              >
-                <SelectTrigger id="store-status" className="w-full">
-                  <SelectValue placeholder="Select operational status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {STATUS_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value}>
-                      {o.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+            id="store-status"
+            options={STATUS_OPTIONS}
+            placeholder="Select operational status"
           />
-          {errors.status && (
-            <p className="text-xs text-destructive">{errors.status.message}</p>
-          )}
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="store-address">Street Address *</Label>
+      <FormGrid>
+        <FormField
+          label="Street Address"
+          required
+          htmlFor="store-address"
+          error={errors.address}
+        >
           <Input
             id="store-address"
             placeholder="742 Evergreen Blvd, Suite 100"
             {...register("address")}
           />
-          {errors.address && (
-            <p className="text-xs text-destructive">{errors.address.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="store-city">City, State & ZIP *</Label>
+        <FormField
+          label="City, State & ZIP"
+          required
+          htmlFor="store-city"
+          error={errors.cityStateZip}
+        >
           <Input
             id="store-city"
             placeholder="Downtown Core District, CA 90210"
             {...register("cityStateZip")}
           />
-          {errors.cityStateZip && (
-            <p className="text-xs text-destructive">
-              {errors.cityStateZip.message}
-            </p>
-          )}
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="store-phone">Phone</Label>
+      <FormGrid cols={3}>
+        <FormField label="Phone" htmlFor="store-phone" error={errors.phone}>
           <Input
             id="store-phone"
             type="tel"
             placeholder="+1 (555) 019-2834"
             {...register("phone")}
           />
-          {errors.phone && (
-            <p className="text-xs text-destructive">{errors.phone.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="store-email">Email</Label>
+        <FormField label="Email" htmlFor="store-email" error={errors.email}>
           <Input
             id="store-email"
             type="email"
             placeholder="southbay@shopcrm.internal"
             {...register("email")}
           />
-          {errors.email && (
-            <p className="text-xs text-destructive">{errors.email.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="store-tax">Tax Rate (%)</Label>
+        <FormField
+          label="Tax Rate (%)"
+          htmlFor="store-tax"
+          error={errors.taxRate}
+        >
           <Input
             id="store-tax"
             type="number"
@@ -232,57 +193,50 @@ export function StoreForm({
             className="tabular-nums"
             {...register("taxRate")}
           />
-          {errors.taxRate && (
-            <p className="text-xs text-destructive">{errors.taxRate.message}</p>
-          )}
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="manager-name">Assigned Store Manager *</Label>
+      <FormGrid>
+        <FormField
+          label="Assigned Store Manager"
+          required
+          htmlFor="manager-name"
+          error={errors.managerName}
+        >
           <Input
             id="manager-name"
             placeholder="Sarah Jenkins"
             {...register("managerName")}
           />
-          {errors.managerName && (
-            <p className="text-xs text-destructive">
-              {errors.managerName.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="manager-email">Manager Email *</Label>
+        <FormField
+          label="Manager Email"
+          required
+          htmlFor="manager-email"
+          error={errors.managerEmail}
+        >
           <Input
             id="manager-email"
             type="email"
             placeholder="sarah.j@shopcrm.internal"
             {...register("managerEmail")}
           />
-          {errors.managerEmail && (
-            <p className="text-xs text-destructive">
-              {errors.managerEmail.message}
-            </p>
-          )}
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="store-description">Store Tagline / Description</Label>
+      <FormField
+        label="Store Tagline / Description"
+        htmlFor="store-description"
+        error={errors.description}
+      >
         <Textarea
           id="store-description"
           rows={2}
           placeholder="Omnichannel Retail Node • Flagship Showroom"
           {...register("description")}
         />
-        {errors.description && (
-          <p className="text-xs text-destructive">
-            {errors.description.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
       {!initialData && (
         <div className="flex items-start gap-2.5 rounded-lg border border-border bg-accent/60 p-3 text-xs text-muted-foreground">
@@ -298,22 +252,11 @@ export function StoreForm({
         </div>
       )}
 
-      <div className="flex items-center justify-end gap-2.5 border-t border-border pt-4">
-        {onCancel && (
-          <Button
-            type="button"
-            variant="outline"
-            disabled={isSubmitting}
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-        )}
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          {submitLabel}
-        </Button>
-      </div>
-    </form>
+      <FormActions
+        isSubmitting={isSubmitting}
+        submitLabel={submitLabel}
+        onCancel={onCancel}
+      />
+    </FormLayout>
   );
 }

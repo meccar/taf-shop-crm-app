@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { slugify } from "@/lib/utils";
 import {
   categoryFormSchema,
@@ -11,20 +10,18 @@ import {
 } from "@/features/categories/schemas/category.schema";
 import type { Category } from "@/features/categories/types/category.types";
 import type { Store } from "@/features/stores/types/store.types";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { CATEGORY_ICON_OPTIONS } from "@/components/shared/category-icon";
+import {
+  FieldActionButton,
+  FormActions,
+  FormField,
+  FormGrid,
+  FormLayout,
+  FormSelect,
+  type SelectOption,
+} from "@/components/shared/form-fields";
 
 interface CategoryFormProps {
   stores: Store[];
@@ -35,6 +32,11 @@ interface CategoryFormProps {
   onSubmit: (values: CategoryFormValues) => void;
   onCancel?: () => void;
 }
+
+const STATUS_OPTIONS: SelectOption[] = [
+  { value: "ACTIVE", label: "Active (POS Visible)" },
+  { value: "INACTIVE", label: "Inactive / Hidden" },
+];
 
 export function CategoryForm({
   stores,
@@ -85,45 +87,46 @@ export function CategoryForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-      <div className="space-y-1.5">
-        <Label htmlFor="cat-name">Category Title *</Label>
+    <FormLayout onSubmit={handleSubmit(onSubmit)}>
+      <FormField
+        label="Category Title"
+        required
+        htmlFor="cat-name"
+        error={errors.name}
+      >
         <Input
           id="cat-name"
           placeholder="e.g. Wellness & Herbal Remedies"
           {...register("name")}
         />
-        {errors.name && (
-          <p className="text-xs text-destructive">{errors.name.message}</p>
-        )}
-      </div>
+      </FormField>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="cat-slug">URL Slug *</Label>
-            <button
-              type="button"
-              onClick={handleAutoSlug}
-              className="inline-flex items-center gap-1 text-[11px] font-medium text-primary hover:underline cursor-pointer"
-            >
-              <Sparkles className="h-3 w-3" />
+      <FormGrid>
+        <FormField
+          label="URL Slug"
+          required
+          htmlFor="cat-slug"
+          error={errors.slug}
+          labelAction={
+            <FieldActionButton icon={Sparkles} onClick={handleAutoSlug}>
               From title
-            </button>
-          </div>
+            </FieldActionButton>
+          }
+        >
           <Input
             id="cat-slug"
             placeholder="wellness-remedies"
             className="font-mono text-xs"
             {...register("slug")}
           />
-          {errors.slug && (
-            <p className="text-xs text-destructive">{errors.slug.message}</p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="cat-pos-order">POS Sequence Order *</Label>
+        <FormField
+          label="POS Sequence Order"
+          required
+          htmlFor="cat-pos-order"
+          error={errors.posOrder}
+        >
           <Input
             id="cat-pos-order"
             type="number"
@@ -132,155 +135,57 @@ export function CategoryForm({
             className="font-mono tabular-nums"
             {...register("posOrder")}
           />
-          {errors.posOrder && (
-            <p className="text-xs text-destructive">
-              {errors.posOrder.message}
-            </p>
-          )}
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>POS Quick-Key Icon</Label>
-          <Controller
+      <FormGrid>
+        <FormField
+          label="POS Quick-Key Icon"
+          htmlFor="cat-icon"
+          error={errors.iconKey}
+        >
+          <FormSelect
             control={control}
             name="iconKey"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose icon" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CATEGORY_ICON_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+            id="cat-icon"
+            options={CATEGORY_ICON_OPTIONS}
+            placeholder="Choose icon"
           />
-        </div>
+        </FormField>
 
-        <div className="space-y-1.5">
-          <Label>Category Status</Label>
-          <Controller
+        <FormField
+          label="Category Status"
+          htmlFor="cat-status"
+          error={errors.status}
+        >
+          <FormSelect
             control={control}
             name="status"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ACTIVE">Active (POS Visible)</SelectItem>
-                  <SelectItem value="INACTIVE">Inactive / Hidden</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
+            id="cat-status"
+            options={STATUS_OPTIONS}
+            placeholder="Choose status"
           />
-        </div>
-      </div>
+        </FormField>
+      </FormGrid>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="cat-desc">Description</Label>
+      <FormField
+        label="Description"
+        htmlFor="cat-desc"
+        error={errors.description}
+      >
         <Textarea
           id="cat-desc"
           rows={2}
           placeholder="Brief summary for channel listings and POS navigation..."
           {...register("description")}
         />
-        {errors.description && (
-          <p className="text-xs text-destructive">
-            {errors.description.message}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      {/* Store Availability Scope */}
-      <div className="space-y-3 rounded-xl border border-border bg-background p-3.5">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <Label htmlFor="all-stores-switch">
-              Available Across All Provisioned Stores
-            </Label>
-            <p className="text-xs text-muted-foreground">
-              Automatically expose this category in every current and future
-              store location.
-            </p>
-          </div>
-          <Controller
-            control={control}
-            name="appliesToAllStores"
-            render={({ field }) => (
-              <Switch
-                id="all-stores-switch"
-                checked={field.value}
-                onCheckedChange={(checked) => {
-                  field.onChange(checked);
-                  if (checked) {
-                    setValue(
-                      "storeIds",
-                      stores.map((s) => s.id),
-                      { shouldValidate: true },
-                    );
-                  }
-                }}
-              />
-            )}
-          />
-        </div>
-
-        {!appliesToAllStores && (
-          <div className="grid grid-cols-1 gap-2 border-t border-border pt-3 sm:grid-cols-2">
-            {stores.map((store) => {
-              const checked = selectedStoreIds.includes(store.id);
-              return (
-                <label
-                  key={store.id}
-                  className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-card px-3 py-2 text-xs hover:bg-accent/40"
-                >
-                  <Checkbox
-                    checked={checked}
-                    onCheckedChange={(val) =>
-                      toggleStoreId(store.id, Boolean(val))
-                    }
-                  />
-                  <div className="min-w-0">
-                    <div className="truncate font-medium text-foreground">
-                      {store.name}
-                    </div>
-                    <div className="font-mono text-[11px] text-muted-foreground tabular-nums">
-                      {store.code}
-                    </div>
-                  </div>
-                </label>
-              );
-            })}
-          </div>
-        )}
-        {errors.storeIds && (
-          <p className="text-xs text-destructive">{errors.storeIds.message}</p>
-        )}
-      </div>
-
-      <div className="flex items-center justify-end gap-2.5 border-t border-border pt-4">
-        {onCancel && (
-          <Button
-            type="button"
-            variant="outline"
-            disabled={isSubmitting}
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-        )}
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          {submitLabel}
-        </Button>
-      </div>
-    </form>
+      <FormActions
+        isSubmitting={isSubmitting}
+        submitLabel={submitLabel}
+        onCancel={onCancel}
+      />
+    </FormLayout>
   );
 }

@@ -101,12 +101,14 @@ import {
   QuickAction,
   QuickActionsMenu,
 } from "@/components/shared/quick-actions-menu";
+import { useAuth } from "@/stores/auth-context";
 
 export function StoresManagementView() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { activeStoreId, setActiveStoreId } = useActiveStore();
+  const { user } = useAuth();
 
   // Read filters from URL searchParams
   const searchParam = searchParams.get("search") ?? "";
@@ -163,10 +165,12 @@ export function StoresManagementView() {
     refetch,
   } = useStores({
     search: searchParam,
-    status: statusParam,
-    format: formatParam,
+    isActive: statusParam === "ALL" ? undefined : statusParam === "ACTIVE",
+    customerId: user?.customerId ?? null,
     page: pageParam,
-    pageSize: pageSizeParam,
+    limit: pageSizeParam,
+    sortBy: "name",
+    sortOrder: "asc",
   });
 
   const updateStoreMutation = useUpdateStore();

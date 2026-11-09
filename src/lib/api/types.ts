@@ -32,4 +32,6 @@ export interface ApiRequestOptions<TResponse = unknown, TBody = unknown> {
   headers?: Record<string, string>;
   signal?: AbortSignal;
   schema?: ZodType<TResponse>;
+  skipAuth?: boolean;
+  _retry?: boolean;
 }

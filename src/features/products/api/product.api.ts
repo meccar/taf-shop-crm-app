@@ -5,10 +5,13 @@ import type {
   ProductsListResponse,
 } from "@/features/products/types/product.types";
 import type { ProductFormValues } from "@/features/products/schemas/product.schema";
+import { ApiResponse } from "@/types/common.type";
 
 export const productApi = {
-  getProducts(filters: ProductFilters): Promise<ProductsListResponse> {
-    return apiRequest<ProductsListResponse>("/products", {
+  getProducts(
+    filters: ProductFilters,
+  ): Promise<ApiResponse<ProductsListResponse>> {
+    return apiRequest<ApiResponse<ProductsListResponse>>("/products", {
       method: "GET",
       params: {
         storeId: filters.storeId,
@@ -24,14 +27,17 @@ export const productApi = {
     });
   },
 
-  getProductById(productId: string): Promise<Product> {
-    return apiRequest<Product>(`/products/${encodeURIComponent(productId)}`, {
-      method: "GET",
-    });
+  getProductById(productId: string): Promise<ApiResponse<Product>> {
+    return apiRequest<ApiResponse<Product>>(
+      `/products/${encodeURIComponent(productId)}`,
+      {
+        method: "GET",
+      },
+    );
   },
 
-  createProduct(payload: ProductFormValues): Promise<Product> {
-    return apiRequest<Product, ProductFormValues>("/products", {
+  createProduct(payload: ProductFormValues): Promise<ApiResponse<Product>> {
+    return apiRequest<ApiResponse<Product>, ProductFormValues>("/products", {
       method: "POST",
       body: payload,
     });
@@ -40,8 +46,8 @@ export const productApi = {
   updateProduct(
     productId: string,
     payload: Partial<ProductFormValues>,
-  ): Promise<Product> {
-    return apiRequest<Product, Partial<ProductFormValues>>(
+  ): Promise<ApiResponse<Product>> {
+    return apiRequest<ApiResponse<Product>, Partial<ProductFormValues>>(
       `/products/${encodeURIComponent(productId)}`,
       {
         method: "PATCH",
@@ -50,8 +56,10 @@ export const productApi = {
     );
   },
 
-  deleteProduct(productId: string): Promise<{ deleted: boolean; id: string }> {
-    return apiRequest<{ deleted: boolean; id: string }>(
+  deleteProduct(
+    productId: string,
+  ): Promise<ApiResponse<{ deleted: boolean; id: string }>> {
+    return apiRequest<ApiResponse<{ deleted: boolean; id: string }>>(
       `/products/${encodeURIComponent(productId)}`,
       {
         method: "DELETE",

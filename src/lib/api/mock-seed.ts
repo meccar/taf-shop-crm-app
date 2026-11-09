@@ -628,7 +628,7 @@ export function createInitialSeedState(): MockDatabaseState {
   ];
 
   const settings: WorkspaceSettings = {
-    tenantId: "RET-994",
+    customerId: "RET-994",
     organizationName: "Shop CRM Retail Group",
     primaryContactEmail: "sarah.j@shopcrm.internal",
     clusterRegion: "US-EAST",

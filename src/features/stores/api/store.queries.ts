@@ -11,7 +11,7 @@ import {
   storeKeys,
 } from "@/lib/query/query-keys";
 
-export function useStores(filters: StoreFilters = {}) {
+export function useStores(filters: StoreFilters) {
   return useQuery({
     queryKey: storeKeys.list(filters),
     queryFn: () => storeApi.getStores(filters),
@@ -51,7 +51,10 @@ export function useUpdateStore() {
       payload: Partial<StoreFormValues>;
     }) => storeApi.updateStore(storeId, payload),
     onSuccess: (updatedStore) => {
-      queryClient.setQueryData(storeKeys.detail(updatedStore.id), updatedStore);
+      queryClient.setQueryData(
+        storeKeys.detail(updatedStore.data.id),
+        updatedStore,
+      );
       void queryClient.invalidateQueries({ queryKey: storeKeys.lists() });
       void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },

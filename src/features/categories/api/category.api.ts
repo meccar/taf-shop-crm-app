@@ -5,12 +5,13 @@ import type {
   CategoryFilters,
 } from "@/features/categories/types/category.types";
 import type { CategoryFormValues } from "@/features/categories/schemas/category.schema";
+import { ApiResponse } from "@/types/common.type";
 
 export const categoryApi = {
   getCategories(
     filters: CategoryFilters = {},
-  ): Promise<CategoriesListResponse> {
-    return apiRequest<CategoriesListResponse>("/categories", {
+  ): Promise<ApiResponse<CategoriesListResponse>> {
+    return apiRequest<ApiResponse<CategoriesListResponse>>("/categories", {
       method: "GET",
       params: {
         search: filters.search,
@@ -22,8 +23,11 @@ export const categoryApi = {
     });
   },
 
-  getCategoryById(categoryId: string, storeId?: string): Promise<Category> {
-    return apiRequest<Category>(
+  getCategoryById(
+    categoryId: string,
+    storeId?: string,
+  ): Promise<ApiResponse<Category>> {
+    return apiRequest<ApiResponse<Category>>(
       `/categories/${encodeURIComponent(categoryId)}`,
       {
         method: "GET",
@@ -32,18 +36,21 @@ export const categoryApi = {
     );
   },
 
-  createCategory(payload: CategoryFormValues): Promise<Category> {
-    return apiRequest<Category, CategoryFormValues>("/categories", {
-      method: "POST",
-      body: payload,
-    });
+  createCategory(payload: CategoryFormValues): Promise<ApiResponse<Category>> {
+    return apiRequest<ApiResponse<Category>, CategoryFormValues>(
+      "/categories",
+      {
+        method: "POST",
+        body: payload,
+      },
+    );
   },
 
   updateCategory(
     categoryId: string,
     payload: Partial<CategoryFormValues>,
-  ): Promise<Category> {
-    return apiRequest<Category, Partial<CategoryFormValues>>(
+  ): Promise<ApiResponse<Category>> {
+    return apiRequest<ApiResponse<Category>, Partial<CategoryFormValues>>(
       `/categories/${encodeURIComponent(categoryId)}`,
       {
         method: "PATCH",
@@ -52,8 +59,8 @@ export const categoryApi = {
     );
   },
 
-  reorderCategories(orderedIds: string[]): Promise<Category[]> {
-    return apiRequest<Category[], { orderedIds: string[] }>(
+  reorderCategories(orderedIds: string[]): Promise<ApiResponse<Category[]>> {
+    return apiRequest<ApiResponse<Category[]>, { orderedIds: string[] }>(
       "/categories/reorder",
       {
         method: "PATCH",
@@ -64,8 +71,8 @@ export const categoryApi = {
 
   deleteCategory(
     categoryId: string,
-  ): Promise<{ deleted: boolean; id: string }> {
-    return apiRequest<{ deleted: boolean; id: string }>(
+  ): Promise<ApiResponse<{ deleted: boolean; id: string }>> {
+    return apiRequest<ApiResponse<{ deleted: boolean; id: string }>>(
       `/categories/${encodeURIComponent(categoryId)}`,
       {
         method: "DELETE",

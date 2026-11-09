@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Database,
   Loader2,
+  LoaderIcon,
   RotateCcw,
   Server,
   ShieldCheck,
@@ -132,7 +133,7 @@ export function WorkspaceSettingsView() {
     <div className="mx-auto max-w-4xl space-y-6">
       <div>
         <span className="text-xs font-semibold uppercase tracking-wider text-primary">
-          Tenant Instance #{settings.tenantId}
+          Tenant Instance #{settings.customerId}
         </span>
         <h1 className="mt-1 text-[28px] font-bold tracking-tight text-foreground leading-tight">
           Workspace Settings
@@ -300,9 +301,7 @@ export function WorkspaceSettingsView() {
                   type="submit"
                   disabled={!isDirty || updateMutation.isPending}
                 >
-                  {updateMutation.isPending && (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  )}
+                  {updateMutation.isPending && <LoaderIcon />}
                   Save Preferences
                 </Button>
               </div>

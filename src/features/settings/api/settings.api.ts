@@ -1,29 +1,33 @@
 import { apiRequest } from "@/lib/api/client";
 import type { WorkspaceSettings } from "@/features/settings/types/settings.types";
 import type { WorkspaceSettingsFormValues } from "@/features/settings/schemas/settings.schema";
+import { ApiResponse } from "@/types/common.type";
 
 export const settingsApi = {
-  getSettings(): Promise<WorkspaceSettings> {
-    return apiRequest<WorkspaceSettings>("/settings", {
+  getSettings(): Promise<ApiResponse<WorkspaceSettings>> {
+    return apiRequest<ApiResponse<WorkspaceSettings>>("/settings", {
       method: "GET",
     });
   },
 
   updateSettings(
     payload: Partial<WorkspaceSettingsFormValues>,
-  ): Promise<WorkspaceSettings> {
-    return apiRequest<WorkspaceSettings, Partial<WorkspaceSettingsFormValues>>(
-      "/settings",
-      {
-        method: "PATCH",
-        body: payload,
-      },
-    );
+  ): Promise<ApiResponse<WorkspaceSettings>> {
+    return apiRequest<
+      ApiResponse<WorkspaceSettings>,
+      Partial<WorkspaceSettingsFormValues>
+    >("/settings", {
+      method: "PATCH",
+      body: payload,
+    });
   },
 
-  resetMockDataset(): Promise<WorkspaceSettings> {
-    return apiRequest<WorkspaceSettings>("/settings/reset-mock-data", {
-      method: "POST",
-    });
+  resetMockDataset(): Promise<ApiResponse<WorkspaceSettings>> {
+    return apiRequest<ApiResponse<WorkspaceSettings>>(
+      "/settings/reset-mock-data",
+      {
+        method: "POST",
+      },
+    );
   },
 };

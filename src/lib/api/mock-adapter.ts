@@ -32,8 +32,51 @@ import type { WorkspaceSettings } from "@/features/settings/types/settings.types
 import type { WorkspaceSettingsFormValues } from "@/features/settings/schemas/settings.schema";
 import { slugify } from "@/lib/utils";
 
+import { APP_ASSETS } from "@/lib/constants/assets";
+import type {
+  AuthTokensResponse,
+  AuthUser,
+  LoginDto,
+  LogoutResponse,
+} from "@/features/auth/types/auth.type";
+
 const STORAGE_KEY = "shop_crm_mock_db_v1";
+const STORAGE_AUTH_SESSION_KEY = "shop_crm_mock_auth_session";
 const SIMULATED_DELAY_MS = 110;
+
+const DEFAULT_MOCK_USER: AuthUser = {
+  id: "usr-1",
+  email: "sarah.j@shopcrm.internal",
+  name: "Sarah Jenkins",
+  role: "Operations Lead",
+  avatarUrl: APP_ASSETS.userAvatar,
+  customerId: "RET-994",
+};
+
+function getMockSessionStatus(): "active" | "revoked" {
+  if (typeof window === "undefined") return "active";
+  try {
+    const status = window.localStorage.getItem(STORAGE_AUTH_SESSION_KEY);
+    // If never set before, initialize as active for seamless first-load preview
+    if (status === null) {
+      window.localStorage.setItem(STORAGE_AUTH_SESSION_KEY, "active");
+      return "active";
+    }
+    return status === "active" ? "active" : "revoked";
+  } catch {
+    return "active";
+  }
+}
+
+function setMockSessionStatus(status: "active" | "revoked"): void {
+  if (typeof window !== "undefined") {
+    try {
+      window.localStorage.setItem(STORAGE_AUTH_SESSION_KEY, status);
+    } catch {
+      // Ignore storage errors
+    }
+  }
+}
 
 let memoryDb: MockDatabaseState | null = null;
 
@@ -179,6 +222,76 @@ export async function dispatchMockApiRequest<TResponse, TBody = unknown>(
   const body = options?.body;
   const cleanPath = endpoint.split("?")[0];
   const db = loadDb();
+
+  // =========================================================================
+  // AUTHENTICATION ENDPOINTS (NestJS contract compatible)
+  // =========================================================================
+  if (cleanPath === "/auth/login" && method === "POST") {
+    const credentials = (body ?? {}) as Partial<LoginDto>;
+    const email = credentials.email?.trim().toLowerCase() ?? "";
+    const password = credentials.password ?? "";
+
+    if (!email || !password || password.length < 6 || !email.includes("@")) {
+      throw new ApiError({
+        statusCode: 400,
+        error: "BAD_REQUEST",
+        message: "Email and password (minimum 6 characters) are required.",
+      });
+    }
+
+    // Allow user to test invalid credential behavior explicitly
+    if (email === "invalid@test.com" || password === "wrongpassword") {
+      throw new ApiError({
+        statusCode: 401,
+        error: "UNAUTHORIZED",
+        message: "Invalid email or password. Please verify your credentials.",
+      });
+    }
+
+    setMockSessionStatus("active");
+    const response: AuthTokensResponse = {
+      accessToken: `mock-jwt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    };
+    return response as unknown as TResponse;
+  }
+
+  if (cleanPath === "/auth/refresh" && method === "POST") {
+    const session = getMockSessionStatus();
+    if (session !== "active") {
+      throw new ApiError({
+        statusCode: 401,
+        error: "UNAUTHORIZED",
+        message: "Session expired or invalid refresh token cookie.",
+      });
+    }
+
+    const response: AuthTokensResponse = {
+      accessToken: `mock-jwt-refreshed-${Date.now()}`,
+    };
+    return response as unknown as TResponse;
+  }
+
+  if (cleanPath === "/auth/logout" && method === "POST") {
+    setMockSessionStatus("revoked");
+    const response: LogoutResponse = { loggedOut: true };
+    return response as unknown as TResponse;
+  }
+
+  if (
+    (cleanPath === "/auth/profile" || cleanPath === "/auth/me") &&
+    method === "GET"
+  ) {
+    const session = getMockSessionStatus();
+    if (session !== "active") {
+      throw new ApiError({
+        statusCode: 401,
+        error: "UNAUTHORIZED",
+        message: "Unauthorized: Missing or invalid token.",
+      });
+    }
+
+    return DEFAULT_MOCK_USER as unknown as TResponse;
+  }
 
   // =========================================================================
   // DASHBOARD ENDPOINTS

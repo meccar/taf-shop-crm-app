@@ -9,6 +9,7 @@ import {
   CheckCheck,
   ChevronDown,
   HelpCircle,
+  LogOut,
   Menu,
   Package,
   RotateCcw,
@@ -46,10 +47,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { GlobalCommandSearch } from "@/components/layout/global-command-search";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/stores/auth-context";
 
 export function AppHeader() {
   const pathname = usePathname();
   const router = useRouter();
+  const { user, logout } = useAuth();
   const {
     activeStoreId,
     activeStore,
@@ -66,6 +69,30 @@ export function AppHeader() {
   const [notificationsDismissed, setNotificationsDismissed] =
     React.useState(false);
   const [avatarError, setAvatarError] = React.useState(false);
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+  const displayName = user?.name || "Sarah Jenkins";
+  const displayEmail = user?.email || "sarah.j@shopcrm.internal";
+  const displayRole = user?.role || "Operations Lead";
+  const displayAvatar = user?.avatarUrl || APP_ASSETS.userAvatar;
+  const initials =
+    displayName
+      .split(" ")
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "SJ";
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      toast.success("Signed out of Shop CRM");
+    } finally {
+      setIsLoggingOut(false);
+      router.replace("/login");
+    }
+  };
 
   const lowStockItems = dashboardSummary?.lowStockItems ?? [];
   const inactiveStores = stores.filter((s) => s.status === "INACTIVE");
@@ -388,23 +415,23 @@ export function AppHeader() {
             >
               {!avatarError ? (
                 <img
-                  src={APP_ASSETS.userAvatar}
-                  alt="Sarah Jenkins"
+                  src={displayAvatar}
+                  alt={displayName}
                   referrerPolicy="no-referrer"
                   onError={() => setAvatarError(true)}
                   className="h-8 w-8 rounded-full border border-border object-cover"
                 />
               ) : (
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-navy text-xs font-semibold text-white">
-                  SJ
+                  {initials}
                 </div>
               )}
               <div className="hidden flex-col md:flex">
                 <span className="text-[13px] font-medium leading-none text-foreground">
-                  Sarah Jenkins
+                  {displayName}
                 </span>
                 <span className="mt-1 text-[11px] leading-none text-muted-foreground">
-                  Operations Lead
+                  {displayRole}
                 </span>
               </div>
               <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
@@ -414,10 +441,10 @@ export function AppHeader() {
                 <DropdownMenuLabel>
                   <div className="flex flex-col">
                     <span className="text-[13px] font-semibold">
-                      Sarah Jenkins
+                      {displayName}
                     </span>
                     <span className="text-[11px] font-normal text-muted-foreground">
-                      sarah.j@shopcrm.internal
+                      {displayEmail}
                     </span>
                   </div>
                 </DropdownMenuLabel>
@@ -453,6 +480,15 @@ export function AppHeader() {
                 >
                   <RotateCcw className="h-4 w-4" />
                   <span>Reset Seed Dataset</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  disabled={isLoggingOut}
+                  onClick={handleLogout}
+                  className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>{isLoggingOut ? "Signing out..." : "Log out"}</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

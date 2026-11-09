@@ -1,5 +1,5 @@
 export interface WorkspaceSettings {
-  tenantId: string;
+  customerId: string;
   organizationName: string;
   primaryContactEmail: string;
   clusterRegion: string;
