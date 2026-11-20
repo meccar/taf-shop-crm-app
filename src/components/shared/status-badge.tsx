@@ -1,44 +1,50 @@
-import type { ComponentProps } from "react";
+"use client";
 
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { CategoryStatus } from "@/features/categories/constants/categories.constant";
+import { ProductStatus } from "@/features/products/constants/product.constant";
+import { StoreStatus } from "@/features/stores/constants/store.constant";
 
-type BadgeVariant = NonNullable<ComponentProps<typeof Badge>["variant"]>;
+export function StoreStatusBadge({ status }: { status: StoreStatus }) {
+  const t = useTranslations("stores.status");
 
-const statusStyles = {
-  success:
-    "border-transparent bg-green-100 text-green-700 hover:bg-green-100/80 dark:text-green-600",
-  warning:
-    "border-transparent bg-amber-100 text-amber-700 hover:bg-amber-100/80 dark:text-amber-600",
-  navy: "border-transparent bg-[#2563eb] text-white hover:bg-[#2563eb]/80 text-white",
-} as const;
+  const variant =
+    status === StoreStatus.ACTIVE
+      ? "success"
+      : status === StoreStatus.PENDING
+        ? "warning"
+        : status === StoreStatus.INACTIVE
+          ? "destructive"
+          : "neutral";
 
-type CustomBadgeVariant = keyof typeof statusStyles;
-
-type StatusBadgeVariant = BadgeVariant | CustomBadgeVariant;
-
-interface StatusBadgeProps extends Omit<
-  ComponentProps<typeof Badge>,
-  "variant"
-> {
-  variant?: StatusBadgeVariant;
+  return <Badge variant={variant}>{t(String(status))}</Badge>;
 }
 
-export function StatusBadge({
-  variant = "default",
-  className,
-  ...props
-}: StatusBadgeProps) {
-  const customStyle =
-    variant in statusStyles
-      ? statusStyles[variant as CustomBadgeVariant]
-      : undefined;
+export function CategoryStatusBadge({ status }: { status: CategoryStatus }) {
+  const t = useTranslations("categories.status");
 
-  return (
-    <Badge
-      variant={customStyle ? "outline" : (variant as BadgeVariant)}
-      className={cn(customStyle, className)}
-      {...props}
-    />
-  );
+  const variant =
+    status === CategoryStatus.ACTIVE
+      ? "success"
+      : status === CategoryStatus.INACTIVE
+        ? "warning"
+        : "neutral";
+
+  return <Badge variant={variant}>{t(String(status))}</Badge>;
+}
+
+export function ProductStatusBadge({ status }: { status: ProductStatus }) {
+  const t = useTranslations("products.status");
+
+  const variant =
+    status === ProductStatus.ACTIVE
+      ? "success"
+      : status === ProductStatus.DRAFT
+        ? "warning"
+        : status === ProductStatus.OUT_OF_STOCK
+          ? "destructive"
+          : "neutral";
+
+  return <Badge variant={variant}>{t(String(status))}</Badge>;
 }

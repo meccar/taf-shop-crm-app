@@ -1,68 +1,80 @@
 import { z } from "zod";
+import { StoreStatus } from "../constants/store.constant";
 
-export const storeStatusSchema = z.enum(["ACTIVE", "INACTIVE"]);
-export const storeFormatSchema = z.enum([
-  "FLAGSHIP",
-  "MALL",
-  "OUTLET",
-  "POPUP",
-]);
+const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const CODE_REGEX = /^[A-Z0-9_-]+$/;
 
-export const storeFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, "Store name must be at least 2 characters")
-    .max(80, "Store name cannot exceed 80 characters"),
-  code: z
-    .string()
-    .trim()
-    .min(3, "Store code is required (e.g. #STR-05)")
-    .max(16, "Store code cannot exceed 16 characters")
-    .regex(
-      /^#?[A-Z0-9-]+$/i,
-      "Code may only contain letters, numbers, hyphens, and optional leading #",
-    ),
-  format: storeFormatSchema,
-  description: z
-    .string()
-    .trim()
-    .max(300, "Description cannot exceed 300 characters")
-    .optional()
-    .or(z.literal("")),
-  address: z
-    .string()
-    .trim()
-    .min(5, "Street address is required")
-    .max(150, "Street address cannot exceed 150 characters"),
-  cityStateZip: z
-    .string()
-    .trim()
-    .min(4, "City, state, and postal code are required")
-    .max(100, "Location cannot exceed 100 characters"),
-  phone: z
-    .string()
-    .trim()
-    .max(30, "Phone number cannot exceed 30 characters")
-    .optional()
-    .or(z.literal("")),
-  email: z
-    .string()
-    .trim()
-    .email("Enter a valid store contact email")
-    .optional()
-    .or(z.literal("")),
-  managerName: z
-    .string()
-    .trim()
-    .min(2, "Primary manager name is required")
-    .max(80, "Manager name cannot exceed 80 characters"),
-  managerEmail: z.string().trim().email("Enter a valid manager email address"),
-  taxRate: z.coerce
-    .number({ invalid_type_error: "Tax rate must be a valid percentage" })
-    .min(0, "Tax rate cannot be negative")
-    .max(25, "Tax rate cannot exceed 25%"),
-  status: storeStatusSchema,
-});
+export function createStoreFormSchema(messages: {
+  required: string;
+  maxName: string;
+  maxSlug: string;
+  invalidSlug: string;
+  maxCode: string;
+  invalidCode: string;
+  maxAddress: string;
+  maxCityStateZip: string;
+  maxPhone: string;
+  maxEmail: string;
+  invalidEmail: string;
+  nonNegativeTax: string;
+  maxDescription: string;
+}) {
+  return z.object({
+    name: z
+      .string()
+      .trim()
+      .min(1, messages.required)
+      .max(150, messages.maxName),
+    slug: z
+      .string()
+      .trim()
+      .min(1, messages.required)
+      .max(160, messages.maxSlug)
+      .regex(SLUG_REGEX, messages.invalidSlug),
+    code: z
+      .string()
+      .trim()
+      .min(1, messages.required)
+      .max(50, messages.maxCode)
+      .regex(CODE_REGEX, messages.invalidCode),
+    address: z
+      .string()
+      .trim()
+      .min(1, messages.required)
+      .max(255, messages.maxAddress),
+    cityStateZip: z
+      .string()
+      .trim()
+      .min(1, messages.required)
+      .max(255, messages.maxCityStateZip),
+    phone: z
+      .string()
+      .trim()
+      .max(50, messages.maxPhone)
+      .optional()
+      .or(z.literal("")),
+    email: z
+      .string()
+      .trim()
+      .max(100, messages.maxEmail)
+      .refine(
+        (val) => val === "" || z.string().email().safeParse(val).success,
+        messages.invalidEmail,
+      )
+      .optional()
+      .or(z.literal("")),
+    taxRate: z.coerce
+      .number({ invalid_type_error: messages.required })
+      .finite(messages.nonNegativeTax)
+      .min(0, messages.nonNegativeTax),
+    description: z
+      .string()
+      .trim()
+      .max(500, messages.maxDescription)
+      .optional()
+      .or(z.literal("")),
+    status: z.nativeEnum(StoreStatus),
+  });
+}
 
-export type StoreFormValues = z.infer<typeof storeFormSchema>;
+export type StoreFormValues = z.infer<ReturnType<typeof createStoreFormSchema>>;

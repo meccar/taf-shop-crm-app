@@ -1,86 +1,46 @@
-import { PaginatedResponse } from "@/lib/api/types";
+import { z } from "zod";
+import { createPaginatedResponseSchema } from "@/lib/api/pagination";
+import { StoreStatus, StoreSortField } from "../constants/store.constant";
 
-export interface StoreInventoryStats {
-  skuCount: number;
-  inStockRate: number;
-  lowStockCount: number;
-}
+export const storeSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  code: z.string(),
+  address: z.string(),
+  cityStateZip: z.string(),
+  phone: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+  taxRate: z.coerce.number().default(0),
+  description: z.string().nullable().optional(),
+  status: z.nativeEnum(StoreStatus),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
 
-export interface StoreManager {
-  id: string;
-  name: string;
-  email: string;
-}
+export type Store = z.infer<typeof storeSchema>;
 
-export interface StoreListItem extends Store {
-  inventoryStats?: StoreInventoryStats;
-  manager?: StoreManager | null;
-}
+export const storeListResponseSchema =
+  createPaginatedResponseSchema(storeSchema);
+export type StoreListResponse = z.infer<typeof storeListResponseSchema>;
 
-export enum StoreFormat {
-  RESTAURANT = 0,
-  CAFE = 1,
-  BAR = 2,
-  FAST_FOOD = 3,
-  FOOD_COURT = 4,
-  BAKERY = 5,
-  CLOUD_KITCHEN = 6,
+export const storeMetricsSchema = z.object({
+  total: z.number(),
+  byStatus: z.object({
+    active: z.number(),
+    inactive: z.number(),
+    pending: z.number(),
+  }),
+  createdLast30Days: z.number(),
+});
 
-  RETAIL_STORE = 7,
-  SUPERMARKET = 8,
-  CONVENIENCE_STORE = 9,
-  DEPARTMENT_STORE = 10,
-  SPECIALTY_STORE = 11,
-}
+export type StoreMetrics = z.infer<typeof storeMetricsSchema>;
 
-export enum StoreStatus {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
-  SUSPENDED = "SUSPENDED",
-}
-
-export interface Store {
-  id: string;
-  customerId: string;
-
-  code: string;
-  name: string;
-  slug: string;
-
-  format: StoreFormat;
-  isActive: boolean;
-
-  description: string | null;
-
-  address: string;
-  cityStateZip: string;
-
-  phone: string | null;
-  email: string | null;
-
-  taxRate: number;
-
-  managerId: string | null;
-
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface StoreFilters {
-  search?: string;
-  isActive?: boolean;
-  customerId: string | null;
+export interface StoreQueryParams {
   page?: number;
   limit?: number;
-  sortBy?: "name" | "slug" | "createdAt" | "updatedAt";
+  search?: string;
+  status?: StoreStatus;
+  sortBy?: StoreSortField;
   sortOrder?: "asc" | "desc";
 }
-export interface StoreMetricsSummary {
-  totalStores: number;
-  activeStores: number;
-  inactiveStores: number;
-  totalCatalogSkus: number;
-  inactiveStoreLabel: string | null;
-}
-
-export type StoresListResponse = PaginatedResponse<Store>;

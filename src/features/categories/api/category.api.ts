@@ -1,82 +1,81 @@
 import { apiRequest } from "@/lib/api/client";
-import type {
-  CategoriesListResponse,
+import { CategoryFormValues } from "../schemas/category.schema";
+import {
+  CategoryQueryParams,
+  CategoryListResponse,
+  categoryListResponseSchema,
   Category,
-  CategoryFilters,
-} from "@/features/categories/types/category.types";
-import type { CategoryFormValues } from "@/features/categories/schemas/category.schema";
-import { ApiResponse } from "@/types/common.type";
+  categorySchema,
+} from "../types/category.type";
 
-export const categoryApi = {
-  getCategories(
-    filters: CategoryFilters = {},
-  ): Promise<ApiResponse<CategoriesListResponse>> {
-    return apiRequest<ApiResponse<CategoriesListResponse>>("/categories", {
-      method: "GET",
-      params: {
-        search: filters.search,
-        occupancy: filters.occupancy ?? "ALL",
-        storeId: filters.storeId,
-        page: filters.page ?? 1,
-        pageSize: filters.pageSize ?? 25,
-      },
-    });
-  },
+export async function listCategories(
+  params: CategoryQueryParams = {},
+): Promise<CategoryListResponse> {
+  return apiRequest<CategoryListResponse>("/categories", {
+    method: "GET",
+    query: {
+      page: params.page,
+      limit: params.limit,
+      search: params.search,
+      status: params.status,
+      parentId: params.parentId,
+      sortBy: params.sortBy,
+      sortOrder: params.sortOrder,
+    },
+    schema: categoryListResponseSchema,
+  });
+}
 
-  getCategoryById(
-    categoryId: string,
-    storeId?: string,
-  ): Promise<ApiResponse<Category>> {
-    return apiRequest<ApiResponse<Category>>(
-      `/categories/${encodeURIComponent(categoryId)}`,
-      {
-        method: "GET",
-        params: { storeId },
-      },
-    );
-  },
+export async function getCategory(id: string): Promise<Category> {
+  return apiRequest<Category>(`/categories/${encodeURIComponent(id)}`, {
+    method: "GET",
+    schema: categorySchema,
+  });
+}
 
-  createCategory(payload: CategoryFormValues): Promise<ApiResponse<Category>> {
-    return apiRequest<ApiResponse<Category>, CategoryFormValues>(
-      "/categories",
-      {
-        method: "POST",
-        body: payload,
-      },
-    );
-  },
+export async function getCategoryBySlug(slug: string): Promise<Category> {
+  return apiRequest<Category>(`/categories/slug/${encodeURIComponent(slug)}`, {
+    method: "GET",
+    schema: categorySchema,
+  });
+}
 
-  updateCategory(
-    categoryId: string,
-    payload: Partial<CategoryFormValues>,
-  ): Promise<ApiResponse<Category>> {
-    return apiRequest<ApiResponse<Category>, Partial<CategoryFormValues>>(
-      `/categories/${encodeURIComponent(categoryId)}`,
-      {
-        method: "PATCH",
-        body: payload,
-      },
-    );
-  },
+export async function createCategory(
+  values: CategoryFormValues,
+): Promise<Category> {
+  return apiRequest<Category>("/categories", {
+    method: "POST",
+    body: {
+      name: values.name,
+      slug: values.slug,
+      description: values.description === "" ? undefined : values.description,
+      parentId:
+        values.parentId === "" || values.parentId === null
+          ? undefined
+          : values.parentId,
+      status: values.status,
+    },
+    schema: categorySchema,
+  });
+}
 
-  reorderCategories(orderedIds: string[]): Promise<ApiResponse<Category[]>> {
-    return apiRequest<ApiResponse<Category[]>, { orderedIds: string[] }>(
-      "/categories/reorder",
-      {
-        method: "PATCH",
-        body: { orderedIds },
-      },
-    );
-  },
+export async function updateCategory(
+  id: string,
+  values: Partial<CategoryFormValues>,
+): Promise<Category> {
+  return apiRequest<Category>(`/categories/${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    body: {
+      ...values,
+      description: values.description === "" ? undefined : values.description,
+      parentId: values.parentId === "" ? null : values.parentId,
+    },
+    schema: categorySchema,
+  });
+}
 
-  deleteCategory(
-    categoryId: string,
-  ): Promise<ApiResponse<{ deleted: boolean; id: string }>> {
-    return apiRequest<ApiResponse<{ deleted: boolean; id: string }>>(
-      `/categories/${encodeURIComponent(categoryId)}`,
-      {
-        method: "DELETE",
-      },
-    );
-  },
-};
+export async function deleteCategory(id: string): Promise<void> {
+  await apiRequest<unknown>(`/categories/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+  });
+}

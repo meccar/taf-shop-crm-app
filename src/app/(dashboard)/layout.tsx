@@ -1,6 +1,6 @@
 import * as React from "react";
-import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { AuthGuard } from "@/components/auth/auth-guard";
+import { AppShell } from "@/components/layout/app-shell";
+import { AuthGuard } from "@/features/auth/components/auth-guard";
 
 export default function DashboardGroupLayout({
   children,
@@ -9,7 +9,7 @@ export default function DashboardGroupLayout({
 }) {
   return (
     <AuthGuard>
-      <DashboardShell>{children}</DashboardShell>
+      <AppShell>{children}</AppShell>
     </AuthGuard>
   );
 }

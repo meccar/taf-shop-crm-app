@@ -1,0 +1,58 @@
+{
+  "title": "Danh mục",
+  "subtitle": "Tổ chức và phân cấp danh mục sản phẩm cho cửa hàng đang chọn.",
+  "totalBadge": "{count} danh mục",
+  "createCategory": "Tạo danh mục",
+  "editCategory": "Chỉnh sửa danh mục",
+  "viewCategory": "Chi tiết danh mục",
+  "searchPlaceholder": "Tìm danh mục theo tên hoặc slug...",
+  "allStatuses": "Tất cả",
+  "parentFilter": "Danh mục cha",
+  "allParents": "Tất cả cấp cha",
+  "rootOnly": "Cấp cao nhất",
+  "viewProducts": "Xem sản phẩm",
+  "columns": {
+    "hierarchy": "Danh mục",
+    "parent": "Danh mục cha",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "updatedAt": "Cập nhật",
+    "actions": "Thao tác"
+  },
+  "fields": {
+    "name": "Tên danh mục",
+    "namePlaceholder": "VD: Laptop & Máy trạm",
+    "slug": "Slug",
+    "slugPlaceholder": "laptop-may-tram",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Mô tả ngắn gọn về danh mục...",
+    "parentId": "Danh mục cha",
+    "noParent": "Không có (Danh mục gốc)",
+    "status": "Trạng thái",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Cập nhật lần cuối"
+  },
+  "status": {
+    "0": "Hoạt động",
+    "1": "Ngừng hoạt động",
+    "2": "Lưu trữ"
+  },
+  "dialogs": {
+    "createSubtitle": "Thêm danh mục mới vào cửa hàng đang chọn.",
+    "editSubtitle": "Cập nhật phân cấp, slug hoặc trạng thái danh mục.",
+    "deleteTitle": "Xóa danh mục \"{name}\"?",
+    "deleteDescription": "Hành động này không thể hoàn tác. Danh mục đang chứa sản phẩm không thể xóa.",
+    "deleteConflict": "Danh mục này đang được sử dụng nên không thể xóa. Bạn có muốn chuyển sang ngừng hoạt động không?",
+    "deleteConfirm": "Xóa danh mục"
+  },
+  "toasts": {
+    "created": "Tạo danh mục thành công",
+    "updated": "Cập nhật danh mục thành công",
+    "deleted": "Đã xóa danh mục",
+    "deactivated": "Đã ngừng hoạt động danh mục"
+  },
+  "empty": {
+    "title": "Chưa có danh mục trong cửa hàng này",
+    "description": "Tạo danh mục đầu tiên để phân loại sản phẩm cho cửa hàng."
+  }
+}

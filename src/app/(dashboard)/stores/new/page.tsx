@@ -1,5 +1,5 @@
-import { CreateStorePageView } from "@/features/stores/components/store-page-views";
+import { StoreForm } from "@/features/stores/components/store-form";
 
 export default function NewStorePage() {
-  return <CreateStorePageView />;
+  return <StoreForm />;
 }

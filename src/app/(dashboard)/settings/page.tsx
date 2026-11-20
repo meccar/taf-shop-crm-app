@@ -1,5 +1,5 @@
-import { WorkspaceSettingsView } from "@/features/settings/components/workspace-settings-view";
+import { SettingsView } from "@/features/settings/components/settings-view";
 
 export default function SettingsPage() {
-  return <WorkspaceSettingsView />;
+  return <SettingsView />;
 }

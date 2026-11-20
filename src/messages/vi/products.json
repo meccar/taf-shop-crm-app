@@ -1,0 +1,92 @@
+{
+  "title": "Sản phẩm",
+  "subtitle": "Quản lý SKU, giá bán, tồn kho và hình ảnh cho cửa hàng đang chọn.",
+  "createProduct": "Tạo sản phẩm",
+  "editProduct": "Chỉnh sửa sản phẩm",
+  "viewProduct": "Chi tiết sản phẩm",
+  "searchPlaceholder": "Tìm sản phẩm theo tên, SKU hoặc slug...",
+  "skuLookupPlaceholder": "Nhập chính xác SKU...",
+  "skuLookup": "Tìm SKU",
+  "allCategories": "Tất cả danh mục",
+  "allStatuses": "Tất cả trạng thái",
+  "lowStockOnly": "Chỉ tồn kho thấp",
+  "lowStockBadge": "Sắp hết hàng",
+  "adjustStock": "Điều chỉnh kho",
+  "columns": {
+    "product": "Sản phẩm",
+    "category": "Danh mục",
+    "price": "Giá bán",
+    "stock": "Tồn kho",
+    "status": "Trạng thái",
+    "updatedAt": "Cập nhật",
+    "actions": "Thao tác"
+  },
+  "fields": {
+    "name": "Tên sản phẩm",
+    "namePlaceholder": "VD: Tai nghe không dây Studio",
+    "sku": "SKU",
+    "skuPlaceholder": "SKU-1001",
+    "slug": "Slug",
+    "slugPlaceholder": "tai-nghe-khong-day-studio",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Thông số kỹ thuật và mô tả sản phẩm...",
+    "categoryId": "Danh mục",
+    "selectCategory": "Chọn danh mục",
+    "status": "Trạng thái",
+    "price": "Giá bán",
+    "costPrice": "Giá vốn",
+    "stockQuantity": "Số lượng tồn kho",
+    "lowStockThreshold": "Ngưỡng cảnh báo tồn thấp",
+    "images": "Hình ảnh sản phẩm",
+    "metadata": "Thuộc tính mở rộng",
+    "addMetadata": "Thêm thuộc tính",
+    "noMetadata": "Chưa có thuộc tính nào.",
+    "metadataKey": "Tên thuộc tính (VD: mau_sac)",
+    "metadataValue": "Giá trị (VD: Đen)"
+  },
+  "status": {
+    "0": "Nháp",
+    "1": "Đang bán",
+    "2": "Ngừng bán",
+    "3": "Lưu trữ"
+  },
+  "validation": {
+    "activeRequiresStock": "Sản phẩm đang bán phải có tồn kho lớn hơn 0",
+    "deltaNonZero": "Giá trị điều chỉnh phải khác 0"
+  },
+  "upload": {
+    "dropzoneTitle": "Nhấp hoặc kéo thả ảnh sản phẩm vào đây",
+    "dropzoneHint": "Hỗ trợ JPEG, PNG, WebP tối đa 5 MB mỗi ảnh (tối đa 10 ảnh)",
+    "ready": "Đã đính kèm",
+    "uploading": "Đang tải lên",
+    "finalizing": "Đang hoàn tất...",
+    "failed": "Tải lên thất bại",
+    "removeImage": "Xóa ảnh",
+    "retryUpload": "Thử lại",
+    "cancelUpload": "Hủy tải lên",
+    "waitPending": "Vui lòng đợi tải ảnh xong hoặc xóa ảnh lỗi trước khi lưu.",
+    "maxFilesReached": "Đã đạt giới hạn tối đa {max} ảnh.",
+    "invalidType": "{name}: định dạng không hỗ trợ. Chỉ dùng JPEG, PNG hoặc WebP.",
+    "fileTooLarge": "{name}: tệp vượt quá giới hạn {maxMb} MB."
+  },
+  "dialogs": {
+    "adjustStockTitle": "Điều chỉnh kho cho \"{name}\"",
+    "adjustStockDescription": "Tồn kho hiện tại: {current}. Nhập số nguyên tăng hoặc giảm.",
+    "deltaLabel": "Mức thay đổi (+/-)",
+    "projectedStock": "Tồn kho sau điều chỉnh: {projected}",
+    "adjustStockConfirm": "Áp dụng điều chỉnh",
+    "deleteTitle": "Xóa sản phẩm \"{name}\"?",
+    "deleteDescription": "Hành động này không thể hoàn tác và sẽ xóa sản phẩm khỏi cửa hàng.",
+    "deleteConfirm": "Xóa sản phẩm"
+  },
+  "toasts": {
+    "created": "Tạo sản phẩm thành công",
+    "updated": "Cập nhật sản phẩm thành công",
+    "stockAdjusted": "Đã cập nhật tồn kho",
+    "deleted": "Đã xóa sản phẩm"
+  },
+  "empty": {
+    "title": "Chưa có sản phẩm nào",
+    "description": "Tạo sản phẩm đầu tiên hoặc thay đổi bộ lọc hiện tại."
+  }
+}

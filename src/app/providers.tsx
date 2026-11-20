@@ -1,23 +1,17 @@
 "use client";
 
-import * as React from "react";
-import { QueryProvider } from "@/lib/query/query-provider";
-import { ActiveStoreProvider } from "@/stores/active-store-context";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "@/stores/auth-context";
+import type { ReactNode } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+import { getQueryClient } from "@/lib/query/query-client";
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
+export function AppProviders({ children }: { children: ReactNode }) {
+  const queryClient = getQueryClient();
+
   return (
-    <QueryProvider>
-      <AuthProvider>
-        <ActiveStoreProvider>
-          <TooltipProvider delay={150}>
-            {children}
-            <Toaster />
-          </TooltipProvider>
-        </ActiveStoreProvider>
-      </AuthProvider>
-    </QueryProvider>
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <Toaster position="top-right" richColors closeButton />
+    </QueryClientProvider>
   );
 }

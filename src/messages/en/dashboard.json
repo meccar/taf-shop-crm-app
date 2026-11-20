@@ -1,0 +1,32 @@
+{
+  "title": "Overview",
+  "subtitle": "Operational summary across your active store and tenant locations.",
+  "mockTag": "Preview",
+  "activeStoreCard": "Active Store Context",
+  "noStoreSelected": "No active store selected",
+  "openStores": "Manage Stores",
+  "openCategories": "Manage Categories",
+  "openProducts": "Manage Products",
+  "kpis": {
+    "storesTotal": "Total Stores",
+    "storesActive": "Active Stores",
+    "categoriesTotal": "Store Categories",
+    "productsTotal": "Store Products",
+    "lowStockCount": "Low Stock SKUs"
+  },
+  "quickActions": {
+    "title": "Workspace Navigation",
+    "createStore": "Create Store",
+    "createCategory": "Create Category",
+    "createProduct": "Create Product"
+  },
+  "recentActivity": {
+    "title": "Recent Inventory & Store Activity",
+    "empty": "No recent activity reported.",
+    "types": {
+      "STORE_CREATED": "Store created",
+      "PRODUCT_UPDATED": "Product updated",
+      "STOCK_LOW": "Low stock alert"
+    }
+  }
+}

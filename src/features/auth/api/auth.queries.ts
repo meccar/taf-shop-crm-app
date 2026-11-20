@@ -1,61 +1,48 @@
-"use client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getActiveStoreId, setActiveStoreId } from "@/lib/api/store-context";
+import { login, logout } from "../api/auth.api";
+import { listStores } from "@/features/stores/api/store.api";
+import { StoreStatus } from "@/features/stores/constants/store.constant";
+import { LoginFormValues } from "../schemas/auth.schema";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "@/features/auth/api/auth.api";
-import type { LoginDto } from "@/features/auth/types/auth.type";
+export async function ensureDefaultActiveStore(): Promise<void> {
+  const existing = getActiveStoreId();
+  const storesPage = await listStores({ page: 1, limit: 50 });
+  const items = storesPage.items;
 
-export const authKeys = {
-  all: ["auth"] as const,
-  profile: () => [...authKeys.all, "profile"] as const,
-};
+  if (existing && items.some((store) => store.id === existing)) {
+    return;
+  }
 
-export function useLogin() {
+  const preferred =
+    items.find((store) => store.status === StoreStatus.ACTIVE) ??
+    items[0] ??
+    null;
+  setActiveStoreId(preferred ? preferred.id : null);
+}
+
+export function useLoginMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (credentials: LoginDto) => authApi.login(credentials),
-
+    mutationFn: async (values: LoginFormValues) => {
+      const response = await login(values);
+      await ensureDefaultActiveStore().catch(() => undefined);
+      return response;
+    },
     onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: authKeys.profile(),
-      });
+      queryClient.clear();
     },
   });
 }
 
-export function useRefresh() {
+export function useLogoutMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => authApi.refresh(),
-
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: authKeys.profile(),
-      });
-    },
-  });
-}
-
-export function useProfile(enabled = true) {
-  return useQuery({
-    queryKey: authKeys.profile(),
-    queryFn: () => authApi.getProfile(),
-    enabled,
-    retry: false,
-  });
-}
-
-export function useLogout() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: () => authApi.logout(),
-
+    mutationFn: logout,
     onSettled: () => {
-      queryClient.removeQueries({
-        queryKey: authKeys.all,
-      });
+      queryClient.clear();
     },
   });
 }

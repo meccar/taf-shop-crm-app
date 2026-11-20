@@ -1,85 +1,84 @@
-"use client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { categoryApi } from "@/features/categories/api/category.api";
-import type { CategoryFilters } from "@/features/categories/types/category.types";
-import type { CategoryFormValues } from "@/features/categories/schemas/category.schema";
+import { useActiveStoreId } from "@/lib/api/use-active-store";
+import { queryKeys } from "@/lib/query/query-keys";
+import { CategoryFormValues } from "../schemas/category.schema";
+import { CategoryQueryParams } from "../types/category.type";
 import {
-  categoryKeys,
-  dashboardKeys,
-  productKeys,
-} from "@/lib/query/query-keys";
+  listCategories,
+  getCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from "./category.api";
 
-export function useCategories(filters: CategoryFilters = {}) {
+export function useCategoriesListQuery(
+  params: CategoryQueryParams,
+  enabled = true,
+) {
+  const activeStoreId = useActiveStoreId();
+
   return useQuery({
-    queryKey: categoryKeys.list(filters),
-    queryFn: () => categoryApi.getCategories(filters),
+    queryKey: queryKeys.categories.list(activeStoreId, { ...params }),
+    queryFn: () => listCategories(params),
+    enabled: enabled && Boolean(activeStoreId),
   });
 }
 
-export function useCategory(categoryId: string, storeId?: string) {
+export function useCategoryDetailQuery(id: string, enabled = true) {
+  const activeStoreId = useActiveStoreId();
+
   return useQuery({
-    queryKey: [...categoryKeys.detail(categoryId), storeId ?? "all"],
-    queryFn: () => categoryApi.getCategoryById(categoryId, storeId),
-    enabled: Boolean(categoryId),
+    queryKey: queryKeys.categories.detail(activeStoreId, id),
+    queryFn: () => getCategory(id),
+    enabled: enabled && Boolean(activeStoreId) && Boolean(id),
   });
 }
 
-export function useCreateCategory() {
+export function useCreateCategoryMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CategoryFormValues) =>
-      categoryApi.createCategory(payload),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+    mutationFn: (values: CategoryFormValues) => createCategory(values),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.categories.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }
 
-export function useUpdateCategory() {
+export function useUpdateCategoryMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({
-      categoryId,
-      payload,
+      id,
+      values,
     }: {
-      categoryId: string;
-      payload: Partial<CategoryFormValues>;
-    }) => categoryApi.updateCategory(categoryId, payload),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: productKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      id: string;
+      values: Partial<CategoryFormValues>;
+    }) => updateCategory(id, values),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.categories.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.products.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }
 
-export function useReorderCategories() {
+export function useDeleteCategoryMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (orderedIds: string[]) =>
-      categoryApi.reorderCategories(orderedIds),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({
-        queryKey: dashboardKeys.activity(),
-      });
-    },
-  });
-}
-
-export function useDeleteCategory() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (categoryId: string) => categoryApi.deleteCategory(categoryId),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+    mutationFn: (id: string) => deleteCategory(id),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.categories.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }

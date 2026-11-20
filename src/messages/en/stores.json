@@ -1,0 +1,87 @@
+{
+  "title": "Stores Management",
+  "subtitle": "Manage physical retail locations, store codes, status lifecycle, and store-level catalogs.",
+  "tenantInstance": "Tenant #{customerId}",
+  "locationsCount": "{count} locations provisioned",
+  "createStore": "Create Store",
+  "editStore": "Edit Store",
+  "viewStore": "Store Details",
+  "searchPlaceholder": "Search stores by name, code, or slug...",
+  "allStatuses": "All statuses",
+  "viewTable": "Table view",
+  "viewGrid": "Grid view",
+  "switchContext": "Set active",
+  "currentContext": "Current context",
+  "activeContextBadge": "Active context",
+  "viewCatalog": "Open catalog",
+  "metrics": {
+    "totalStores": "Total Stores",
+    "activeStores": "Active Stores",
+    "pendingInactive": "Pending / Inactive",
+    "createdLast30Days": "Created (30d)",
+    "mockTag": "Preview"
+  },
+  "export": {
+    "button": "Export",
+    "csv": "Export CSV",
+    "xlsx": "Export Excel (XLSX)",
+    "json": "Export JSON",
+    "success": "Store export downloaded"
+  },
+  "columns": {
+    "nameAndCode": "Store Name & Code",
+    "location": "Location / Address",
+    "status": "Status",
+    "taxRate": "Tax Rate",
+    "updatedAt": "Updated",
+    "actions": "Actions"
+  },
+  "fields": {
+    "name": "Store Name",
+    "namePlaceholder": "e.g. Downtown Flagship",
+    "code": "Store Code",
+    "codePlaceholder": "STR-01",
+    "slug": "Slug",
+    "slugPlaceholder": "downtown-flagship",
+    "status": "Status",
+    "address": "Street Address",
+    "addressPlaceholder": "742 Evergreen Blvd, Suite 100",
+    "cityStateZip": "City, State & ZIP",
+    "cityStateZipPlaceholder": "Los Angeles, CA 90210",
+    "phone": "Phone",
+    "phonePlaceholder": "+1 (555) 010-9900",
+    "email": "Store Email",
+    "emailPlaceholder": "downtown@company.com",
+    "taxRate": "Tax Rate (%)",
+    "description": "Description",
+    "descriptionPlaceholder": "Notes about this retail location...",
+    "updatedAt": "Last Updated"
+  },
+  "status": {
+    "0": "Active",
+    "1": "Inactive",
+    "2": "Pending"
+  },
+  "dialogs": {
+    "createSubtitle": "Provision a new retail location for your tenant.",
+    "editSubtitle": "Update store details, tax configuration, or status.",
+    "activateTitle": "Activate \"{name}\"?",
+    "activateDescription": "This store will be marked as active and ready for catalog operations.",
+    "deactivateTitle": "Deactivate \"{name}\"?",
+    "deactivateDescription": "This store will be marked as inactive. Existing catalog records remain preserved.",
+    "deleteTitle": "Delete store \"{name}\"?",
+    "deleteDescription": "This action cannot be undone. All store configuration will be removed.",
+    "deleteConfirm": "Delete Store"
+  },
+  "toasts": {
+    "created": "Store created successfully",
+    "updated": "Store updated successfully",
+    "activated": "Store activated",
+    "deactivated": "Store deactivated",
+    "deleted": "Store deleted"
+  },
+  "empty": {
+    "title": "No stores found",
+    "description": "Create your first store location to start managing categories and products."
+  }
+}

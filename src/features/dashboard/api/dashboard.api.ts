@@ -1,21 +1,32 @@
 import { apiRequest } from "@/lib/api/client";
-import type {
-  ActivityLogItem,
-  DashboardSummary,
-} from "@/features/dashboard/types/dashboard.types";
-import { ApiResponse } from "@/types/common.type";
+import { ApiError } from "@/lib/api/errors";
+import {
+  dashboardOverviewSchema,
+  type DashboardOverview,
+} from "../types/dashboard.type";
+import {
+  getMockDashboardOverview,
+  isDashboardOverviewMockEnabled,
+} from "../mocks/dashboard.mock";
 
-export const dashboardApi = {
-  getSummary(storeId: string): Promise<ApiResponse<DashboardSummary>> {
-    return apiRequest<ApiResponse<DashboardSummary>>("/dashboard/summary", {
+export async function getDashboardOverview(): Promise<{
+  data: DashboardOverview | null;
+  isMocked: boolean;
+}> {
+  try {
+    const data = await apiRequest<DashboardOverview>("/dashboard/overview", {
       method: "GET",
-      params: { storeId },
+      schema: dashboardOverviewSchema,
     });
-  },
-
-  getActivityLogs(): Promise<ApiResponse<ActivityLogItem[]>> {
-    return apiRequest<ApiResponse<ActivityLogItem[]>>("/dashboard/activity", {
-      method: "GET",
-    });
-  },
-};
+    return { data, isMocked: false };
+  } catch (err) {
+    if (
+      isDashboardOverviewMockEnabled() &&
+      err instanceof ApiError &&
+      (err.statusCode === 404 || err.statusCode === 501)
+    ) {
+      return { data: getMockDashboardOverview(), isMocked: true };
+    }
+    return { data: null, isMocked: false };
+  }
+}

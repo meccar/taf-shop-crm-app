@@ -1,38 +1,47 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
-import { AppProviders } from "@/app/providers";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { Suspense, type ReactNode } from "react";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+import { AppProviders } from "./providers";
+import { IntlProvider } from "@/components/shared/intl-provider";
+import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ["latin", "vietnamese"],
   variable: "--font-inter",
   display: "swap",
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Shop CRM — Multi-Store Management SaaS",
+  title: "Shop CRM",
   description:
-    "Multi-store retail CRM and catalog management SaaS built with Next.js App Router, strict TypeScript, shadcn/ui, and TanStack Query.",
+    "Multi-store retail operations management SaaS for stores, categories, and product catalogs.",
   openGraph: {
-    title: "Shop CRM — Multi-Store Management SaaS",
+    title: "Shop CRM",
     description:
-      "Multi-store retail CRM and catalog management SaaS built with Next.js App Router, strict TypeScript, shadcn/ui, and TanStack Query.",
+      "Multi-store retail operations management SaaS for stores, categories, and product catalogs.",
     type: "website",
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className="font-sans antialiased">
-        <AppProviders>{children}</AppProviders>
+    <html
+      lang={DEFAULT_LOCALE}
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body>
+        <Suspense fallback={null}>
+          <IntlProvider>
+            <AppProviders>{children}</AppProviders>
+          </IntlProvider>
+        </Suspense>
       </body>
     </html>
   );

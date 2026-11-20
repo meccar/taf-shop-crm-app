@@ -1,0 +1,22 @@
+{
+  "title": "Cài đặt",
+  "subtitle": "Quản lý hồ sơ tài khoản và tùy chọn hiển thị của hệ thống.",
+  "profile": {
+    "title": "Hồ sơ tài khoản",
+    "name": "Họ và tên",
+    "email": "Email",
+    "customerId": "Mã Tenant",
+    "role": "Vai trò"
+  },
+  "preferences": {
+    "title": "Tùy chọn hiển thị",
+    "description": "Chọn ngôn ngữ giao diện và định dạng tiền tệ hiển thị.",
+    "language": "Ngôn ngữ giao diện",
+    "currency": "Đơn vị tiền tệ hiển thị",
+    "currencySaved": "Đã cập nhật tiền tệ hiển thị sang {currency}",
+    "currencies": {
+      "USD": "Đô la Mỹ (USD)",
+      "VND": "Việt Nam Đồng (VND)"
+    }
+  }
+}

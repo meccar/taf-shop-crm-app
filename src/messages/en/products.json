@@ -1,0 +1,92 @@
+{
+  "title": "Products",
+  "subtitle": "Manage SKUs, pricing, inventory levels, and media assets for the active store.",
+  "createProduct": "Create Product",
+  "editProduct": "Edit Product",
+  "viewProduct": "Product Details",
+  "searchPlaceholder": "Search products by name, SKU, or slug...",
+  "skuLookupPlaceholder": "Exact SKU...",
+  "skuLookup": "Find SKU",
+  "allCategories": "All categories",
+  "allStatuses": "All statuses",
+  "lowStockOnly": "Low stock only",
+  "lowStockBadge": "Low stock",
+  "adjustStock": "Adjust stock",
+  "columns": {
+    "product": "Product",
+    "category": "Category",
+    "price": "Price",
+    "stock": "Stock",
+    "status": "Status",
+    "updatedAt": "Updated",
+    "actions": "Actions"
+  },
+  "fields": {
+    "name": "Product Name",
+    "namePlaceholder": "e.g. Studio Wireless Headset",
+    "sku": "SKU",
+    "skuPlaceholder": "SKU-1001",
+    "slug": "Slug",
+    "slugPlaceholder": "studio-wireless-headset",
+    "description": "Description",
+    "descriptionPlaceholder": "Product specifications and details...",
+    "categoryId": "Category",
+    "selectCategory": "Select category",
+    "status": "Status",
+    "price": "Selling Price",
+    "costPrice": "Cost Price",
+    "stockQuantity": "Stock Quantity",
+    "lowStockThreshold": "Low Stock Threshold",
+    "images": "Product Images",
+    "metadata": "Attributes & Metadata",
+    "addMetadata": "Add attribute",
+    "noMetadata": "No custom attributes added.",
+    "metadataKey": "Key (e.g. color)",
+    "metadataValue": "Value (e.g. Midnight)"
+  },
+  "status": {
+    "0": "Draft",
+    "1": "Active",
+    "2": "Inactive",
+    "3": "Archived"
+  },
+  "validation": {
+    "activeRequiresStock": "Active products must have stock quantity greater than 0",
+    "deltaNonZero": "Adjustment delta cannot be 0"
+  },
+  "upload": {
+    "dropzoneTitle": "Click or drag product images to upload",
+    "dropzoneHint": "JPEG, PNG, or WebP up to 5 MB each (maximum 10 images)",
+    "ready": "Attached",
+    "uploading": "Uploading",
+    "finalizing": "Finalizing...",
+    "failed": "Upload failed",
+    "removeImage": "Remove image",
+    "retryUpload": "Retry upload",
+    "cancelUpload": "Cancel upload",
+    "waitPending": "Wait for active uploads to finish or remove failed uploads before saving.",
+    "maxFilesReached": "Maximum of {max} images reached.",
+    "invalidType": "{name}: unsupported file format. Use JPEG, PNG, or WebP.",
+    "fileTooLarge": "{name}: file exceeds {maxMb} MB limit."
+  },
+  "dialogs": {
+    "adjustStockTitle": "Adjust stock for \"{name}\"",
+    "adjustStockDescription": "Current quantity: {current}. Enter a positive or negative whole-number delta.",
+    "deltaLabel": "Quantity delta (+/-)",
+    "projectedStock": "Projected quantity: {projected}",
+    "adjustStockConfirm": "Apply Adjustment",
+    "deleteTitle": "Delete product \"{name}\"?",
+    "deleteDescription": "This action cannot be undone and removes the product from the active store.",
+    "deleteConfirm": "Delete Product"
+  },
+  "toasts": {
+    "created": "Product created successfully",
+    "updated": "Product updated successfully",
+    "stockAdjusted": "Stock level updated",
+    "deleted": "Product deleted"
+  },
+  "empty": {
+    "title": "No products in this store",
+    "description": "Create your first product or adjust your active filters."
+  }
+}

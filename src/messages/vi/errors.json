@@ -1,0 +1,31 @@
+{
+  "fallback": "Đã xảy ra lỗi. Vui lòng thử lại.",
+  "codes": {
+    "NETWORK_ERROR": "Không thể kết nối máy chủ. Kiểm tra mạng hoặc cấu hình API.",
+    "UNAUTHORIZED": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+    "INVALID_CREDENTIALS": "Email hoặc mật khẩu không chính xác.",
+    "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này.",
+    "NOT_FOUND": "Không tìm thấy bản ghi được yêu cầu.",
+    "CONFLICT": "Dữ liệu bị trùng lặp hoặc xung đột.",
+    "STORE_HEADER_REQUIRED": "Vui lòng chọn cửa hàng đang hoạt động trước.",
+    "STORE_NOT_FOUND": "Không tìm thấy cửa hàng.",
+    "STORE_CODE_EXISTS": "Mã cửa hàng này đã tồn tại.",
+    "STORE_SLUG_EXISTS": "Slug cửa hàng này đã tồn tại.",
+    "CATEGORY_NOT_FOUND": "Không tìm thấy danh mục.",
+    "CATEGORY_SLUG_EXISTS": "Slug danh mục này đã tồn tại trong cửa hàng.",
+    "CATEGORY_IN_USE": "Danh mục đang có sản phẩm nên không thể xóa.",
+    "PRODUCT_NOT_FOUND": "Không tìm thấy sản phẩm.",
+    "PRODUCT_SKU_EXISTS": "SKU sản phẩm này đã tồn tại trong cửa hàng.",
+    "PRODUCT_SLUG_EXISTS": "Slug sản phẩm này đã tồn tại trong cửa hàng.",
+    "INVALID_STOCK_ADJUSTMENT": "Số lượng tồn kho không thể nhỏ hơn 0.",
+    "INVALID_RESPONSE": "Máy chủ trả về dữ liệu không hợp lệ.",
+    "HTTP_400": "Dữ liệu gửi lên không hợp lệ. Kiểm tra lại các trường đánh dấu.",
+    "HTTP_401": "Yêu cầu xác thực. Vui lòng đăng nhập lại.",
+    "HTTP_403": "Bạn không có quyền thực hiện thao tác này.",
+    "HTTP_404": "Không tìm thấy tài nguyên được yêu cầu.",
+    "HTTP_409": "Thao tác xung đột với dữ liệu hiện có.",
+    "HTTP_500": "Lỗi máy chủ nội bộ. Vui lòng thử lại sau.",
+    "HTTP_502": "Không thể kết nối tới dịch vụ backend. Vui lòng kiểm tra máy chủ API.",
+    "HTTP_503": "Dịch vụ tạm thời gián đoạn. Vui lòng thử lại sau."
+  }
+}

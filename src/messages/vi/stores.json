@@ -1,0 +1,87 @@
+{
+  "title": "Quản lý cửa hàng",
+  "subtitle": "Quản lý các điểm bán lẻ, mã cửa hàng, trạng thái hoạt động và danh mục theo cửa hàng.",
+  "tenantInstance": "Tenant #{customerId}",
+  "locationsCount": "{count} chi nhánh",
+  "createStore": "Tạo cửa hàng",
+  "editStore": "Chỉnh sửa cửa hàng",
+  "viewStore": "Chi tiết cửa hàng",
+  "searchPlaceholder": "Tìm cửa hàng theo tên, mã hoặc slug...",
+  "allStatuses": "Tất cả trạng thái",
+  "viewTable": "Dạng bảng",
+  "viewGrid": "Dạng lưới",
+  "switchContext": "Chọn làm mặc định",
+  "currentContext": "Đang chọn",
+  "activeContextBadge": "Đang hoạt động",
+  "viewCatalog": "Mở danh mục hàng",
+  "metrics": {
+    "totalStores": "Tổng cửa hàng",
+    "activeStores": "Đang hoạt động",
+    "pendingInactive": "Chờ / Ngừng",
+    "createdLast30Days": "Mới (30 ngày)",
+    "mockTag": "Xem trước"
+  },
+  "export": {
+    "button": "Xuất dữ liệu",
+    "csv": "Xuất CSV",
+    "xlsx": "Xuất Excel (XLSX)",
+    "json": "Xuất JSON",
+    "success": "Đã tải xuống tệp xuất cửa hàng"
+  },
+  "columns": {
+    "nameAndCode": "Tên & Mã cửa hàng",
+    "location": "Địa chỉ",
+    "status": "Trạng thái",
+    "taxRate": "Thuế suất",
+    "updatedAt": "Cập nhật",
+    "actions": "Thao tác"
+  },
+  "fields": {
+    "name": "Tên cửa hàng",
+    "namePlaceholder": "VD: Cửa hàng Trung tâm",
+    "code": "Mã cửa hàng",
+    "codePlaceholder": "STR-01",
+    "slug": "Slug",
+    "slugPlaceholder": "cua-hang-trung-tam",
+    "status": "Trạng thái",
+    "address": "Địa chỉ",
+    "addressPlaceholder": "123 Nguyễn Huệ, Quận 1",
+    "cityStateZip": "Thành phố / Tỉnh / Mã bưu điện",
+    "cityStateZipPlaceholder": "TP. Hồ Chí Minh, 700000",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "+84 28 3800 9900",
+    "email": "Email cửa hàng",
+    "emailPlaceholder": "center@company.com",
+    "taxRate": "Thuế suất (%)",
+    "description": "Mô tả",
+    "descriptionPlaceholder": "Ghi chú về điểm bán hàng này...",
+    "updatedAt": "Cập nhật lần cuối"
+  },
+  "status": {
+    "0": "Hoạt động",
+    "1": "Ngừng hoạt động",
+    "2": "Chờ duyệt"
+  },
+  "dialogs": {
+    "createSubtitle": "Khởi tạo một địa điểm bán lẻ mới cho hệ thống.",
+    "editSubtitle": "Cập nhật thông tin cửa hàng, thuế suất hoặc trạng thái.",
+    "activateTitle": "Kích hoạt \"{name}\"?",
+    "activateDescription": "Cửa hàng sẽ được chuyển sang trạng thái hoạt động và sẵn sàng vận hành.",
+    "deactivateTitle": "Ngừng hoạt động \"{name}\"?",
+    "deactivateDescription": "Cửa hàng sẽ tạm ngừng hoạt động. Dữ liệu sản phẩm vẫn được giữ nguyên.",
+    "deleteTitle": "Xóa cửa hàng \"{name}\"?",
+    "deleteDescription": "Hành động này không thể hoàn tác. Mọi cấu hình cửa hàng sẽ bị xóa.",
+    "deleteConfirm": "Xóa cửa hàng"
+  },
+  "toasts": {
+    "created": "Tạo cửa hàng thành công",
+    "updated": "Cập nhật cửa hàng thành công",
+    "activated": "Đã kích hoạt cửa hàng",
+    "deactivated": "Đã ngừng hoạt động cửa hàng",
+    "deleted": "Đã xóa cửa hàng"
+  },
+  "empty": {
+    "title": "Chưa có cửa hàng nào",
+    "description": "Tạo cửa hàng đầu tiên để bắt đầu quản lý danh mục và sản phẩm."
+  }
+}

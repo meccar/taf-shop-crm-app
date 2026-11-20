@@ -1,0 +1,58 @@
+{
+  "title": "Categories",
+  "subtitle": "Organize and structure the catalog hierarchy for the active store.",
+  "totalBadge": "{count} total",
+  "createCategory": "Create Category",
+  "editCategory": "Edit Category",
+  "viewCategory": "Category Details",
+  "searchPlaceholder": "Search categories by name or slug...",
+  "allStatuses": "All",
+  "parentFilter": "Parent category",
+  "allParents": "All parents",
+  "rootOnly": "Top-level",
+  "viewProducts": "View products",
+  "columns": {
+    "hierarchy": "Category Hierarchy",
+    "parent": "Parent",
+    "description": "Description",
+    "status": "Status",
+    "updatedAt": "Last Updated",
+    "actions": "Actions"
+  },
+  "fields": {
+    "name": "Category Name",
+    "namePlaceholder": "e.g. Laptops & Workstations",
+    "slug": "Slug",
+    "slugPlaceholder": "laptops-workstations",
+    "description": "Description",
+    "descriptionPlaceholder": "Brief description of this category...",
+    "parentId": "Parent Category",
+    "noParent": "None (Top-level category)",
+    "status": "Status",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
+  },
+  "status": {
+    "0": "Active",
+    "1": "Inactive",
+    "2": "Archived"
+  },
+  "dialogs": {
+    "createSubtitle": "Add a category to the active store.",
+    "editSubtitle": "Update category hierarchy, slug, or lifecycle status.",
+    "deleteTitle": "Delete category \"{name}\"?",
+    "deleteDescription": "This action cannot be undone. Categories assigned to products cannot be deleted.",
+    "deleteConflict": "This category is currently in use and cannot be deleted. Would you like to deactivate it instead?",
+    "deleteConfirm": "Delete Category"
+  },
+  "toasts": {
+    "created": "Category created successfully",
+    "updated": "Category updated successfully",
+    "deleted": "Category deleted successfully",
+    "deactivated": "Category deactivated"
+  },
+  "empty": {
+    "title": "No categories in this store",
+    "description": "Create a category to classify products in the active store."
+  }
+}

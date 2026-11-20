@@ -1,20 +1,14 @@
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
-import { dashboardApi } from "@/features/dashboard/api/dashboard.api";
-import { dashboardKeys } from "@/lib/query/query-keys";
+import { useActiveStoreId } from "@/lib/api/use-active-store";
+import { queryKeys } from "@/lib/query/query-keys";
+import { getDashboardOverview } from "../api/dashboard.api";
 
-export function useDashboardSummary(storeId: string) {
-  return useQuery({
-    queryKey: dashboardKeys.summary(storeId),
-    queryFn: () => dashboardApi.getSummary(storeId),
-    enabled: Boolean(storeId),
-  });
-}
+export function useDashboardOverviewQuery(enabled = true) {
+  const activeStoreId = useActiveStoreId();
 
-export function useActivityLogs() {
   return useQuery({
-    queryKey: dashboardKeys.activity(),
-    queryFn: () => dashboardApi.getActivityLogs(),
+    queryKey: queryKeys.dashboard.overview(activeStoreId),
+    queryFn: getDashboardOverview,
+    enabled,
   });
 }

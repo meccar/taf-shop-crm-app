@@ -1,0 +1,95 @@
+{
+  "appName": "Shop CRM",
+  "brand": "Shop CRM",
+  "nav": {
+    "overview": "Tổng quan",
+    "stores": "Cửa hàng",
+    "products": "Sản phẩm",
+    "categories": "Danh mục",
+    "settings": "Cài đặt"
+  },
+  "shell": {
+    "openMenu": "Mở menu",
+    "profile": "Hồ sơ",
+    "logout": "Đăng uất",
+    "activeStore": "Cửa hàng đang chọn",
+    "selectStore": "Chọn cửa hàng",
+    "noStores": "Chưa có cửa hàng",
+    "switchingStore": "Đã chuyển sang cửa hàng {name}",
+    "noActiveStoreTitle": "Chọn cửa hàng đang hoạt động",
+    "noActiveStoreDescription": "Danh mục và sản phẩm thuộc về từng cửa hàng riêng biệt. Vui lòng chọn hoặc tạo cửa hàng để tiếp tục.",
+    "goToStores": "Đi tới Cửa hàng",
+    "collapseSidebar": "Thu gọn thanh bên",
+    "expandSidebar": "Mở rộng thanh bên",
+    "openNavigation": "Mở điều hướng",
+    "signOut": "Đăng xuất",
+    "signedOut": "Đã đăng xuất",
+    "language": "Ngôn ngữ",
+    "breadcrumbNew": "Tạo mới",
+    "breadcrumbEdit": "Chỉnh sửa",
+    "breadcrumbDetails": "Chi tiết"
+  },
+  "actions": {
+    "save": "Lưu",
+    "saving": "Đang lưu...",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "back": "Quay lại",
+    "edit": "Chỉnh sửa",
+    "view": "Xem",
+    "delete": "Xóa",
+    "activate": "Kích hoạt",
+    "deactivate": "Ngừng hoạt động",
+    "deactivateInstead": "Ngừng hoạt động thay thế",
+    "retry": "Thử lại",
+    "reset": "Đặt lại",
+    "confirm": "Xác nhận"
+  },
+  "pagination": {
+    "rowsPerPage": "Số dòng mỗi trang",
+    "showingRange": "{from}-{to} trên {total}",
+    "pageOf": "Trang {page} / {totalPages}",
+    "first": "Trang đầu",
+    "previous": "Trang trước",
+    "next": "Trang sau",
+    "last": "Trang cuối",
+    "showing": "Hiển thị {from}–{to} trên tổng số {total}",
+    "firstPage": "Đến trang đầu",
+    "previousPage": "Đến trang trước",
+    "nextPage": "Đến trang tiếp theo",
+    "lastPage": "Đến trang cuối"
+  },
+  "states": {
+    "errorTitle": "Đã xảy ra lỗi",
+    "emptyTitle": "Không tìm thấy dữ liệu",
+    "emptyDescription": "Chưa có dữ liệu để hiển thị.",
+    "loading": "Đang tải..."
+  },
+  "sort": {
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Cập nhật",
+    "name": "Tên",
+    "slug": "Slug",
+    "asc": "Tăng dần",
+    "desc": "Giảm dần"
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc",
+    "maxLength": "Tối đa {max} ký tự",
+    "invalidSlug": "Chỉ sử dụng chữ thường, số và dấu gạch ngang",
+    "invalidCode": "Chỉ sử dụng chữ hoa, số, dấu gạch ngang hoặc gạch dưới",
+    "invalidEmail": "Nhập địa chỉ email hợp lệ",
+    "positiveNumber": "Giá trị phải lớn hơn 0",
+    "nonNegativeNumber": "Giá trị phải từ 0 trở lên",
+    "integer": "Phải là số nguyên",
+    "maxDecimalPlaces": "Tối đa {places} chữ số thập phân"
+  },
+  "errors": {
+    "loadFailedTitle": "Không thể tải dữ liệu",
+    "unexpected": "Đã xảy ra lỗi không mong muốn"
+  },
+  "languages": {
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt"
+  }
+}

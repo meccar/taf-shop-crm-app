@@ -1,81 +1,103 @@
-"use client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { productApi } from "@/features/products/api/product.api";
-import type { ProductFilters } from "@/features/products/types/product.types";
-import type { ProductFormValues } from "@/features/products/schemas/product.schema";
+import { useActiveStoreId } from "@/lib/api/use-active-store";
+import { queryKeys } from "@/lib/query/query-keys";
 import {
-  categoryKeys,
-  dashboardKeys,
-  productKeys,
-  storeKeys,
-} from "@/lib/query/query-keys";
+  ProductFormValues,
+  AdjustStockValues,
+} from "../schemas/product.schema";
+import { ProductQueryParams } from "../types/product.type";
+import {
+  listProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  adjustProductStock,
+  deleteProduct,
+} from "./product.api";
 
-export function useProducts(filters: ProductFilters) {
+export function useProductsListQuery(
+  params: ProductQueryParams,
+  enabled = true,
+) {
+  const activeStoreId = useActiveStoreId();
+
   return useQuery({
-    queryKey: productKeys.list(filters),
-    queryFn: () => productApi.getProducts(filters),
-    enabled: Boolean(filters.storeId),
+    queryKey: queryKeys.products.list(activeStoreId, { ...params }),
+    queryFn: () => listProducts(params),
+    enabled: enabled && Boolean(activeStoreId),
   });
 }
 
-export function useProduct(productId: string) {
+export function useProductDetailQuery(id: string, enabled = true) {
+  const activeStoreId = useActiveStoreId();
+
   return useQuery({
-    queryKey: productKeys.detail(productId),
-    queryFn: () => productApi.getProductById(productId),
-    enabled: Boolean(productId),
+    queryKey: queryKeys.products.detail(activeStoreId, id),
+    queryFn: () => getProduct(id),
+    enabled: enabled && Boolean(activeStoreId) && Boolean(id),
   });
 }
 
-export function useCreateProduct() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (payload: ProductFormValues) =>
-      productApi.createProduct(payload),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: productKeys.all });
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: storeKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
-    },
-  });
-}
-
-export function useUpdateProduct() {
+export function useCreateProductMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({
-      productId,
-      payload,
+      values,
+      storeId,
     }: {
-      productId: string;
-      payload: Partial<ProductFormValues>;
-    }) => productApi.updateProduct(productId, payload),
-    onSuccess: (updatedProduct) => {
-      queryClient.setQueryData(
-        productKeys.detail(updatedProduct.id),
-        updatedProduct,
-      );
-      void queryClient.invalidateQueries({ queryKey: productKeys.lists() });
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: storeKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      values: ProductFormValues;
+      storeId?: string;
+    }) => createProduct(values, storeId),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.products.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }
 
-export function useDeleteProduct() {
+export function useUpdateProductMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (productId: string) => productApi.deleteProduct(productId),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: productKeys.all });
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: storeKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+    mutationFn: ({ id, values }: { id: string; values: ProductFormValues }) =>
+      updateProduct(id, values),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.products.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
+    },
+  });
+}
+
+export function useAdjustProductStockMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, values }: { id: string; values: AdjustStockValues }) =>
+      adjustProductStock(id, values),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.products.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
+    },
+  });
+}
+
+export function useDeleteProductMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteProduct(id),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.products.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }

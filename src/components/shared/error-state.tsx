@@ -1,39 +1,41 @@
-import { AlertTriangle, RotateCw } from "lucide-react";
+"use client";
+
+import { AlertCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { getErrorMessage } from "@/lib/api/errors";
 
 interface ErrorStateProps {
-  title?: string;
   error: unknown;
   onRetry?: () => void;
 }
 
-export function ErrorState({
-  title = "Unable to load workspace data",
-  error,
-  onRetry,
-}: ErrorStateProps) {
+export function ErrorState({ error, onRetry }: ErrorStateProps) {
+  const tCommon = useTranslations("common");
+  const tErrors = useTranslations("errors");
+
+  const message = getErrorMessage(error, tErrors);
+
   return (
     <div className="flex flex-col items-center justify-center rounded-xl border border-destructive-border bg-destructive-bg/50 px-6 py-10 text-center">
-      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-destructive-bg text-destructive">
-        <AlertTriangle className="h-5 w-5" />
+      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-destructive-bg text-destructive">
+        <AlertCircle className="h-5 w-5" />
       </div>
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-      <p className="mt-1 max-w-md text-[13px] text-muted-foreground">
-        {getErrorMessage(error)}
-      </p>
-      {onRetry && (
+      <h3 className="text-sm font-semibold text-ink">
+        {tCommon("states.errorTitle")}
+      </h3>
+      <p className="mt-1 max-w-md text-sm text-muted">{message}</p>
+      {onRetry ? (
         <Button
           type="button"
           variant="outline"
           size="sm"
-          onClick={onRetry}
           className="mt-4"
+          onClick={onRetry}
         >
-          <RotateCw className="h-3.5 w-3.5" />
-          Retry Request
+          {tCommon("actions.retry")}
         </Button>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -1,76 +1,96 @@
-"use client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { storeApi } from "@/features/stores/api/store.api";
-import type { StoreFilters } from "@/features/stores/types/store.types";
-import type { StoreFormValues } from "@/features/stores/schemas/store.schema";
+import { queryKeys } from "@/lib/query/query-keys";
+import { ExportFormat } from "../constants/store.constant";
+import { StoreFormValues } from "../schemas/store.schema";
+import { StoreQueryParams } from "../types/store.types";
 import {
-  categoryKeys,
-  dashboardKeys,
-  productKeys,
-  storeKeys,
-} from "@/lib/query/query-keys";
+  listStores,
+  getStore,
+  getStoreMetrics,
+  createStore,
+  updateStore,
+  deleteStore,
+  exportStores,
+} from "./store.api";
 
-export function useStores(filters: StoreFilters) {
+export function useStoresListQuery(params: StoreQueryParams, enabled = true) {
   return useQuery({
-    queryKey: storeKeys.list(filters),
-    queryFn: () => storeApi.getStores(filters),
+    queryKey: queryKeys.stores.list({ ...params }),
+    queryFn: () => listStores(params),
+    enabled,
   });
 }
 
-export function useStore(storeId: string) {
+export function useStoreDetailQuery(id: string, enabled = true) {
   return useQuery({
-    queryKey: storeKeys.detail(storeId),
-    queryFn: () => storeApi.getStoreById(storeId),
-    enabled: Boolean(storeId),
+    queryKey: queryKeys.stores.detail(id),
+    queryFn: () => getStore(id),
+    enabled: enabled && Boolean(id),
   });
 }
 
-export function useCreateStore() {
+export function useStoreMetricsQuery(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.stores.metrics(),
+    queryFn: getStoreMetrics,
+    enabled,
+  });
+}
+
+export function useCreateStoreMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: StoreFormValues) => storeApi.createStore(payload),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: storeKeys.all });
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+    mutationFn: (values: StoreFormValues) => createStore(values),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.stores.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }
 
-export function useUpdateStore() {
+export function useUpdateStoreMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({
-      storeId,
-      payload,
+      id,
+      values,
     }: {
-      storeId: string;
-      payload: Partial<StoreFormValues>;
-    }) => storeApi.updateStore(storeId, payload),
-    onSuccess: (updatedStore) => {
-      queryClient.setQueryData(
-        storeKeys.detail(updatedStore.data.id),
-        updatedStore,
-      );
-      void queryClient.invalidateQueries({ queryKey: storeKeys.lists() });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      id: string;
+      values: Partial<StoreFormValues>;
+    }) => updateStore(id, values),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.stores.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
   });
 }
 
-export function useDeleteStore() {
+export function useDeleteStoreMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (storeId: string) => storeApi.deleteStore(storeId),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: storeKeys.all });
-      void queryClient.invalidateQueries({ queryKey: productKeys.all });
-      void queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      void queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+    mutationFn: (id: string) => deleteStore(id),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.stores.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all }),
+      ]);
     },
+  });
+}
+
+export function useExportStoresMutation() {
+  return useMutation({
+    mutationFn: (params: {
+      format: ExportFormat;
+      lang?: string;
+      query?: StoreQueryParams;
+    }) => exportStores(params),
   });
 }

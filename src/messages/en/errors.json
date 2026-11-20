@@ -1,0 +1,31 @@
+{
+  "fallback": "Something went wrong. Please try again.",
+  "codes": {
+    "NETWORK_ERROR": "Unable to reach the server. Check your network connection or API configuration.",
+    "UNAUTHORIZED": "Your session has expired. Please sign in again.",
+    "INVALID_CREDENTIALS": "Invalid email or password.",
+    "FORBIDDEN": "You do not have permission to perform this action.",
+    "NOT_FOUND": "The requested record was not found.",
+    "CONFLICT": "This record conflicts with existing data.",
+    "STORE_HEADER_REQUIRED": "Please select an active store first.",
+    "STORE_NOT_FOUND": "Store not found.",
+    "STORE_CODE_EXISTS": "A store with this code already exists.",
+    "STORE_SLUG_EXISTS": "A store with this slug already exists.",
+    "CATEGORY_NOT_FOUND": "Category not found.",
+    "CATEGORY_SLUG_EXISTS": "A category with this slug already exists in this store.",
+    "CATEGORY_IN_USE": "This category is assigned to products and cannot be deleted.",
+    "PRODUCT_NOT_FOUND": "Product not found.",
+    "PRODUCT_SKU_EXISTS": "A product with this SKU already exists in this store.",
+    "PRODUCT_SLUG_EXISTS": "A product with this slug already exists in this store.",
+    "INVALID_STOCK_ADJUSTMENT": "Stock quantity cannot drop below zero.",
+    "INVALID_RESPONSE": "Received an unexpected non-JSON response from the server.",
+    "HTTP_400": "The submitted data is invalid. Check the highlighted fields.",
+    "HTTP_401": "Authentication is required. Please sign in again.",
+    "HTTP_403": "You do not have permission to perform this action.",
+    "HTTP_404": "The requested resource was not found.",
+    "HTTP_409": "This action conflicts with existing data.",
+    "HTTP_500": "Internal server error. Please try again later.",
+    "HTTP_502": "Backend service is unavailable. Please verify the API server is running.",
+    "HTTP_503": "Service temporarily unavailable. Please try again later."
+  }
+}

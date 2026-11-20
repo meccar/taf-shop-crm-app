@@ -1,0 +1,32 @@
+{
+  "title": "Tổng quan",
+  "subtitle": "Tóm tắt vận hành trên cửa hàng đang chọn và các chi nhánh.",
+  "mockTag": "Xem trước",
+  "activeStoreCard": "Cửa hàng đang chọn",
+  "noStoreSelected": "Chưa chọn cửa hàng nào",
+  "openStores": "Quản lý cửa hàng",
+  "openCategories": "Quản lý danh mục",
+  "openProducts": "Quản lý sản phẩm",
+  "kpis": {
+    "storesTotal": "Tổng cửa hàng",
+    "storesActive": "Cửa hàng hoạt động",
+    "categoriesTotal": "Danh mục cửa hàng",
+    "productsTotal": "Sản phẩm cửa hàng",
+    "lowStockCount": "SKU sắp hết hàng"
+  },
+  "quickActions": {
+    "title": "Điều hướng nhanh",
+    "createStore": "Tạo cửa hàng",
+    "createCategory": "Tạo danh mục",
+    "createProduct": "Tạo sản phẩm"
+  },
+  "recentActivity": {
+    "title": "Hoạt động kho & cửa hàng gần đây",
+    "empty": "Chưa có hoạt động gần đây.",
+    "types": {
+      "STORE_CREATED": "Tạo cửa hàng",
+      "PRODUCT_UPDATED": "Cập nhật sản phẩm",
+      "STOCK_LOW": "Cảnh báo tồn thấp"
+    }
+  }
+}

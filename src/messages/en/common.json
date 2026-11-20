@@ -1,0 +1,95 @@
+{
+  "appName": "Shop CRM",
+  "brand": "Shop CRM",
+  "nav": {
+    "overview": "Overview",
+    "stores": "Stores",
+    "products": "Products",
+    "categories": "Categories",
+    "settings": "Settings"
+  },
+  "shell": {
+    "openMenu": "Open menu",
+    "profile": "Profile",
+    "logout": "Log out",
+    "activeStore": "Active Store",
+    "selectStore": "Select a store",
+    "noStores": "No stores available",
+    "switchingStore": "Switched active store to {name}",
+    "noActiveStoreTitle": "Select an active store",
+    "noActiveStoreDescription": "Categories and products belong to a specific store. Choose or create a store to continue.",
+    "goToStores": "Go to Stores",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "openNavigation": "Open navigation",
+    "signOut": "Sign out",
+    "signedOut": "Signed out",
+    "language": "Language",
+    "breadcrumbNew": "New",
+    "breadcrumbEdit": "Edit",
+    "breadcrumbDetails": "Details"
+  },
+  "actions": {
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "back": "Back",
+    "edit": "Edit",
+    "view": "View",
+    "delete": "Delete",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "deactivateInstead": "Deactivate instead",
+    "retry": "Retry",
+    "reset": "Reset",
+    "confirm": "Confirm"
+  },
+  "pagination": {
+    "rowsPerPage": "Rows per page",
+    "showingRange": "{from}-{to} of {total}",
+    "pageOf": "Page {page} of {totalPages}",
+    "first": "First page",
+    "previous": "Previous page",
+    "next": "Next page",
+    "last": "Last page",
+    "showing": "Showing {from}–{to} of {total}",
+    "firstPage": "Go to first page",
+    "previousPage": "Go to previous page",
+    "nextPage": "Go to next page",
+    "lastPage": "Go to last page"
+  },
+  "states": {
+    "errorTitle": "Something went wrong",
+    "emptyTitle": "No data found",
+    "emptyDescription": "There is nothing to display yet.",
+    "loading": "Loading..."
+  },
+  "sort": {
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "name": "Name",
+    "slug": "Slug",
+    "asc": "Asc",
+    "desc": "Desc"
+  },
+  "validation": {
+    "required": "This field is required",
+    "maxLength": "Must be at most {max} characters",
+    "invalidSlug": "Use lowercase letters, numbers, and hyphens only",
+    "invalidCode": "Use uppercase letters, numbers, hyphens, or underscores",
+    "invalidEmail": "Enter a valid email address",
+    "positiveNumber": "Must be greater than 0",
+    "nonNegativeNumber": "Must be 0 or greater",
+    "integer": "Must be a whole number",
+    "maxDecimalPlaces": "Maximum {places} decimal places allowed"
+  },
+  "errors": {
+    "loadFailedTitle": "Unable to load data",
+    "unexpected": "An unexpected error occurred"
+  },
+  "languages": {
+    "english": "English",
+    "vietnamese": "Vietnamese"
+  }
+}

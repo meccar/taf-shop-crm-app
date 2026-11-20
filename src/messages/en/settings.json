@@ -1,0 +1,22 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your account profile and workspace display preferences.",
+  "profile": {
+    "title": "Account Profile",
+    "name": "Full Name",
+    "email": "Email Address",
+    "customerId": "Tenant ID",
+    "role": "Role"
+  },
+  "preferences": {
+    "title": "Display Preferences",
+    "description": "Choose your interface language and currency formatting.",
+    "language": "Interface Language",
+    "currency": "Display Currency",
+    "currencySaved": "Display currency updated to {currency}",
+    "currencies": {
+      "USD": "US Dollar (USD)",
+      "VND": "Vietnamese Dong (VND)"
+    }
+  }
+}

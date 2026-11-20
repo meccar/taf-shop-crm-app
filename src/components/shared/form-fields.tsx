@@ -7,7 +7,7 @@ import {
   type FieldValues,
   type Path,
 } from "react-hook-form";
-import { Loader2, LoaderIcon, type LucideIcon } from "lucide-react";
+import { LoaderIcon, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -134,14 +134,14 @@ export function FieldActionButton({
   children,
 }: FieldActionButtonProps) {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
       className="inline-flex cursor-pointer items-center gap-1 text-[11px] font-medium text-primary hover:underline"
     >
       <Icon className="h-3 w-3" />
       {children}
-    </button>
+    </Button>
   );
 }
 
