@@ -85,6 +85,7 @@ export function ProductDetailView({ productId }: { productId: string }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <Button
+            nativeButton={false}
             render={
               <Link href="/products">
                 <ArrowLeft className="h-4 w-4" />
@@ -116,6 +117,7 @@ export function ProductDetailView({ productId }: { productId: string }) {
             <span>{tProducts("adjustStock")}</span>
           </Button>
           <Button
+            nativeButton={false}
             render={
               <Link href={`/products/${product.id}/edit`}>
                 <Edit className="h-4 w-4" />

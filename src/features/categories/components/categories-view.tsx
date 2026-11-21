@@ -160,6 +160,7 @@ export function CategoriesView() {
         </div>
 
         <Button
+          nativeButton={false}
           render={
             <Link href="/categories/new">
               <Plus className="h-4 w-4" />
@@ -279,6 +280,7 @@ export function CategoriesView() {
               description={tCategories("empty.description")}
               action={
                 <Button
+                  nativeButton={false}
                   render={
                     <Link href="/categories/new">
                       <Plus className="h-4 w-4" />
@@ -360,6 +362,7 @@ export function CategoriesView() {
                     <TableCell className="text-right whitespace-nowrap">
                       <div className="inline-flex items-center justify-end gap-1">
                         <Button
+                          nativeButton={false}
                           render={
                             <Link href={`/categories/${category.id}`}>
                               <Eye className="h-4 w-4" />
@@ -370,6 +373,7 @@ export function CategoriesView() {
                           aria-label={tCommon("actions.view")}
                         />
                         <Button
+                          nativeButton={false}
                           render={
                             <Link href={`/categories/${category.id}/edit`}>
                               <Edit className="h-4 w-4" />

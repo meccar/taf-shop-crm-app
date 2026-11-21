@@ -16,7 +16,10 @@ export function RequireActiveStore() {
       title={tShell("requireActiveStoreTitle")}
       description={tShell("requireActiveStoreDescription")}
       action={
-        <Button render={<Link href="/stores">{tStores("title")}</Link>} />
+        <Button
+          nativeButton={false}
+          render={<Link href="/stores">{tStores("title")}</Link>}
+        />
       }
     />
   );

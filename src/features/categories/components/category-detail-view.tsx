@@ -80,6 +80,7 @@ export function CategoryDetailView({ categoryId }: { categoryId: string }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <Button
+            nativeButton={false}
             render={
               <Link href="/categories">
                 <ArrowLeft className="h-4 w-4" />
@@ -101,6 +102,7 @@ export function CategoryDetailView({ categoryId }: { categoryId: string }) {
 
         <div className="flex flex-wrap items-center gap-2">
           <Button
+            nativeButton={false}
             render={
               <Link
                 href={`/products?categoryId=${encodeURIComponent(category.id)}`}
@@ -112,6 +114,7 @@ export function CategoryDetailView({ categoryId }: { categoryId: string }) {
             variant="outline"
           />
           <Button
+            nativeButton={false}
             render={
               <Link href={`/categories/${category.id}/edit`}>
                 <Edit className="h-4 w-4" />

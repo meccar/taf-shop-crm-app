@@ -226,6 +226,7 @@ export function ProductsView() {
           </form>
 
           <Button
+            nativeButton={false}
             render={
               <Link href="/products/new">
                 <Plus className="h-4 w-4" />
@@ -365,6 +366,7 @@ export function ProductsView() {
               description={tProducts("empty.description")}
               action={
                 <Button
+                  nativeButton={false}
                   render={
                     <Link href="/products/new">
                       <Plus className="h-4 w-4" />
@@ -469,6 +471,7 @@ export function ProductsView() {
                           <span>{tProducts("adjustStock")}</span>
                         </Button>
                         <Button
+                          nativeButton={false}
                           render={
                             <Link href={`/products/${product.id}`}>
                               <Eye className="h-4 w-4" />
@@ -479,6 +482,7 @@ export function ProductsView() {
                           aria-label={tCommon("actions.view")}
                         />
                         <Button
+                          nativeButton={false}
                           render={
                             <Link href={`/products/${product.id}/edit`}>
                               <Edit className="h-4 w-4" />
